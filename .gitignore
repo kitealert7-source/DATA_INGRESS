@@ -1,0 +1,77 @@
+# ============================================
+# DATA_INGRESS .gitignore
+# ============================================
+
+# ── Secrets & Credentials (CRITICAL — never commit) ──
+.secrets/
+*.env
+*.key
+*.pem
+*.secret
+delta_api.env
+
+# ── Runtime State (machine-specific, regenerated each run) ──
+state/
+PREFLIGHT_DECISION.json
+stale_datasets.txt
+
+# ── Logs (runtime output, not source) ──
+logs/
+LOGS/
+*.log
+
+# ── Temporary / Throwaway Scripts ──
+tmp/
+
+# ── Archive / Legacy (retired, not active code) ──
+archive/
+
+# ── Generated Reports (output artifacts, not source) ──
+reports/Daily_Report_*.md
+reports/*_audit_report.yaml
+
+# ── Data Files (never commit raw/processed data) ──
+*.csv
+*.parquet
+*.h5
+*.pickle
+*.xlsx
+
+# ── Pipeline Metadata (regenerated each run) ──
+metadata/pipeline_hash_registry.json
+
+# ── Python ──
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+*.egg
+
+# ── Virtual Environments ──
+venv/
+.venv/
+*_venv/
+
+# ── IDE / Editor ──
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── Claude / Agent State ──
+.claude/
+.agents/
+
+# ── OS Junk ──
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Backups ──
+*.bak
+*.backup
+*.orig
