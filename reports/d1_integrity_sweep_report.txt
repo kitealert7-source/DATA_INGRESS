@@ -1,0 +1,632 @@
+========================================================
+SYMBOL: AUDJPY_OCTAFX_MASTER
+FILE: AUDJPY_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 39
+File Size: 2370 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.4
+Min Delta (days): 1.0
+Max Delta (days): 3.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: AUDNZD_OCTAFX_MASTER
+FILE: AUDNZD_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 39
+File Size: 2370 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.4
+Min Delta (days): 1.0
+Max Delta (days): 3.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: AUDUSD_OCTAFX_MASTER
+FILE: AUDUSD_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 39
+File Size: 2353 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.4
+Min Delta (days): 1.0
+Max Delta (days): 3.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: AUS200_OCTAFX_MASTER
+FILE: AUS200_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 39
+File Size: 2231 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.4
+Min Delta (days): 1.0
+Max Delta (days): 3.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: BTC_DELTA_MASTER
+FILE: BTC_DELTA_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 56
+File Size: 3046 bytes
+First Timestamp: 2026-01-01
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.0
+Min Delta (days): 1.0
+Max Delta (days): 1.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - COLUMN_STRUCTURE_ERROR (missing: ['tick_volume', 'spread', 'real_volume'])
+  - ROW_COUNT_SUSPICIOUS
+========================================================
+
+========================================================
+SYMBOL: BTC_OCTAFX_MASTER
+FILE: BTCUSD_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 55
+File Size: 3552 bytes
+First Timestamp: 2026-01-01
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.0
+Min Delta (days): 1.0
+Max Delta (days): 2.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_SUSPICIOUS
+========================================================
+
+========================================================
+SYMBOL: CADJPY_OCTAFX_MASTER
+FILE: CADJPY_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 39
+File Size: 2359 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.4
+Min Delta (days): 1.0
+Max Delta (days): 3.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: CHFJPY_OCTAFX_MASTER
+FILE: CHFJPY_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 39
+File Size: 2379 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.4
+Min Delta (days): 1.0
+Max Delta (days): 3.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: ESP35_OCTAFX_MASTER
+FILE: ESP35_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 38
+File Size: 2331 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-24
+Avg Delta (days): 1.4
+Min Delta (days): 1.0
+Max Delta (days): 3.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: ETH_DELTA_MASTER
+FILE: ETH_DELTA_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 56
+File Size: 2835 bytes
+First Timestamp: 2026-01-01
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.0
+Min Delta (days): 1.0
+Max Delta (days): 1.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - COLUMN_STRUCTURE_ERROR (missing: ['tick_volume', 'spread', 'real_volume'])
+  - ROW_COUNT_SUSPICIOUS
+========================================================
+
+========================================================
+SYMBOL: ETH_OCTAFX_MASTER
+FILE: ETHUSD_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 56
+File Size: 3427 bytes
+First Timestamp: 2026-01-01
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.0
+Min Delta (days): 1.0
+Max Delta (days): 1.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_SUSPICIOUS
+========================================================
+
+========================================================
+SYMBOL: EURAUD_OCTAFX_MASTER
+FILE: EURAUD_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 39
+File Size: 2520 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.4
+Min Delta (days): 1.0
+Max Delta (days): 3.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: EURGBP_OCTAFX_MASTER
+FILE: EURGBP_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 39
+File Size: 2339 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.4
+Min Delta (days): 1.0
+Max Delta (days): 3.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: EURJPY_OCTAFX_MASTER
+FILE: EURJPY_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 39
+File Size: 2372 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.4
+Min Delta (days): 1.0
+Max Delta (days): 3.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: EURUSD_OCTAFX_MASTER
+FILE: EURUSD_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 39
+File Size: 2320 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.4
+Min Delta (days): 1.0
+Max Delta (days): 3.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: EUSTX50_OCTAFX_MASTER
+FILE: EUSTX50_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 39
+File Size: 2177 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.4
+Min Delta (days): 1.0
+Max Delta (days): 3.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: FRA40_OCTAFX_MASTER
+FILE: FRA40_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 39
+File Size: 2198 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.4
+Min Delta (days): 1.0
+Max Delta (days): 3.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: GBPAUD_OCTAFX_MASTER
+FILE: GBPAUD_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 39
+File Size: 2371 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.4
+Min Delta (days): 1.0
+Max Delta (days): 3.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: GBPJPY_OCTAFX_MASTER
+FILE: GBPJPY_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 39
+File Size: 2385 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.4
+Min Delta (days): 1.0
+Max Delta (days): 3.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: GBPNZD_OCTAFX_MASTER
+FILE: GBPNZD_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 39
+File Size: 2369 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.4
+Min Delta (days): 1.0
+Max Delta (days): 3.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: GBPUSD_OCTAFX_MASTER
+FILE: GBPUSD_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 39
+File Size: 2378 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.4
+Min Delta (days): 1.0
+Max Delta (days): 3.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: GER40_OCTAFX_MASTER
+FILE: GER40_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 38
+File Size: 2293 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-24
+Avg Delta (days): 1.4
+Min Delta (days): 1.0
+Max Delta (days): 3.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: JPN225_OCTAFX_MASTER
+FILE: JPN225_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 39
+File Size: 2370 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.4
+Min Delta (days): 1.0
+Max Delta (days): 3.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: NAS100_OCTAFX_MASTER
+FILE: NAS100_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 38
+File Size: 2320 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.5
+Min Delta (days): 1.0
+Max Delta (days): 4.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: NZDJPY_OCTAFX_MASTER
+FILE: NZDJPY_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 39
+File Size: 2218 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.4
+Min Delta (days): 1.0
+Max Delta (days): 3.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: NZDUSD_OCTAFX_MASTER
+FILE: NZDUSD_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 39
+File Size: 2352 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.4
+Min Delta (days): 1.0
+Max Delta (days): 3.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: SPX500_OCTAFX_MASTER
+FILE: SPX500_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 7
+File Size: 407 bytes
+First Timestamp: 2026-02-01
+Last Timestamp:  2026-12-01
+Avg Delta (days): 50.5
+Min Delta (days): 30.0
+Max Delta (days): 91.0
+Delta Pattern: MONTHLY
+Future Timestamps: YES
+--------------------------------------------------------
+FLAGS:
+  - EMPTY_OR_CORRUPT
+  - ROW_COUNT_CRITICAL
+  - FUTURE_TIMESTAMP
+  - MONTHLY_PATTERN_DETECTED
+  - ALWAYS_1ST_OF_MONTH
+========================================================
+
+========================================================
+SYMBOL: UK100_OCTAFX_MASTER
+FILE: UK100_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 39
+File Size: 2352 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.4
+Min Delta (days): 1.0
+Max Delta (days): 3.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: US10Y_YAHOO_MASTER
+FILE: US10Y_YAHOO_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 13
+File Size: 704 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-01-21
+Avg Delta (days): 1.6
+Min Delta (days): 1.0
+Max Delta (days): 4.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - COLUMN_STRUCTURE_ERROR (missing: ['tick_volume', 'spread', 'real_volume'])
+  - EMPTY_OR_CORRUPT
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: US30_OCTAFX_MASTER
+FILE: US30_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 38
+File Size: 2315 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.5
+Min Delta (days): 1.0
+Max Delta (days): 4.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: USDCAD_OCTAFX_MASTER
+FILE: USDCAD_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 39
+File Size: 2354 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.4
+Min Delta (days): 1.0
+Max Delta (days): 3.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: USDCHF_OCTAFX_MASTER
+FILE: USDCHF_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 39
+File Size: 2354 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.4
+Min Delta (days): 1.0
+Max Delta (days): 3.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: USDJPY_OCTAFX_MASTER
+FILE: USDJPY_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 39
+File Size: 2362 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.4
+Min Delta (days): 1.0
+Max Delta (days): 3.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+========================================================
+SYMBOL: XAUUSD_OCTAFX_MASTER
+FILE: XAUUSD_OCTAFX_1d_2026_RAW.csv
+--------------------------------------------------------
+Rows: 39
+File Size: 2385 bytes
+First Timestamp: 2026-01-02
+Last Timestamp:  2026-02-25
+Avg Delta (days): 1.4
+Min Delta (days): 1.0
+Max Delta (days): 3.0
+Delta Pattern: DAILY
+Future Timestamps: NO
+--------------------------------------------------------
+FLAGS:
+  - ROW_COUNT_CRITICAL
+========================================================
+
+
+D1 INTEGRITY SUMMARY
+--------------------------------------------------
+Total Symbols Checked:        34
+Healthy D1 Files:             0
+Monthly Pattern Detected:     1
+Future Timestamp Detected:    1
+Row Count Critical:           30
+Large Gap Detected:           0
+Column Structure Error:       3
+--------------------------------------------------
+Likely Systemic Issue: NO

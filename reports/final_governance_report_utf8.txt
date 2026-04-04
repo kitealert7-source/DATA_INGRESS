@@ -1,0 +1,9 @@
+﻿EXECUTION_GOVERNANCE_AUDIT
+--------------------------
+Partitions Scanned: 1893
+Spread Zero Violations: 0
+Execution Model Mismatches: 0
+OHLC Identity Violations: 164
+Anomalous Transformations: 0
+STATUS: FAIL
+OHLC Identity Sample: ['AUS200_OCTAFX_1h_2016_RESEARCH.csv', 'BTCUSD_OCTAFX_15m_2023_RESEARCH.csv', 'BTCUSD_OCTAFX_15m_2024_RESEARCH.csv', 'BTCUSD_OCTAFX_15m_2025_RESEARCH.csv', 'BTCUSD_OCTAFX_15m_2026_RESEARCH.csv']

@@ -1,0 +1,125 @@
+==================================================
+DOWNSTREAM INVALIDATION IMPLEMENTATION REPORT
+==================================================
+Date: 2026-02-25
+
+RAW Manifest Added:      YES
+CLEAN Manifest Added:     YES
+RESEARCH Manifest Added:  YES
+
+CLEAN Skip Logic Modified:    YES
+RESEARCH Skip Logic Modified: YES
+
+Future Timestamp Guard Added: YES
+
+--------------------------------------------------
+FILES MODIFIED:
+--------------------------------------------------
+
+1. raw_update_sop17.py
+   - Added: import hashlib
+   - Added: compute_file_sha256() helper (line 419)
+   - Added: _write_raw_manifest() generator (line 431)
+   - Modified: save_data() commit block to call _write_raw_manifest (line 405)
+   - Modified: validate_timeframe_delta() to include future timestamp guard (line 463)
+
+2. clean_rebuild_sop17.py
+   - Added: import hashlib
+   - Added: compute_file_sha256() helper (line 147)
+   - Added: _check_raw_staleness() function (line 157)
+   - Added: _write_clean_manifest() function (line 193)
+   - Modified: process_file() skip logic with staleness bypass (line 276)
+   - Modified: process_file() commit block to call _write_clean_manifest (line 367)
+
+3. rebuild_research_sop17.py
+   - Added: compute_file_sha256() helper (line 169)
+   - Added: _check_clean_staleness() function (line 179)
+   - Added: _write_research_manifest() function (line 207)
+   - Modified: process_file() skip logic with staleness bypass (line 459)
+   - Modified: process_file() commit block to call _write_research_manifest (line 640)
+
+--------------------------------------------------
+MANIFEST CHAIN:
+--------------------------------------------------
+
+RAW Manifest (per-file):
+  {
+    "symbol", "feed", "timeframe", "year",
+    "row_count", "first_timestamp", "last_timestamp",
+    "sha256", "generated_utc"
+  }
+
+CLEAN Manifest (per-file):
+  {
+    "raw_sha256",            <-- links to RAW state
+    "raw_row_count",
+    "raw_last_timestamp",
+    "clean_sha256",
+    "row_count",
+    "generated_utc"
+  }
+
+RESEARCH Manifest (per-file):
+  {
+    "clean_sha256",          <-- links to CLEAN state
+    "clean_row_count",
+    "research_sha256",
+    "generated_utc"
+  }
+
+--------------------------------------------------
+STALENESS DETECTION LOGIC:
+--------------------------------------------------
+
+RAW -> CLEAN:
+  Trigger if ANY of:
+    raw_manifest.sha256 != clean_manifest.raw_sha256
+    raw_manifest.row_count != clean_manifest.raw_row_count
+    raw_manifest.last_timestamp != clean_manifest.raw_last_timestamp
+  Action: Delete stale CLEAN, force full rebuild
+
+CLEAN -> RESEARCH:
+  Trigger if ANY of:
+    clean_manifest.clean_sha256 != research_manifest.clean_sha256
+    clean_manifest.row_count != research_manifest.clean_row_count
+  Action: Delete stale RESEARCH, force full rebuild
+
+FUTURE TIMESTAMP GUARD:
+  Trigger: df['time'].max() > pd.Timestamp.utcnow() + 24h
+  Action: RuntimeError -> ingestion BLOCKED
+
+--------------------------------------------------
+TEST RESULTS:
+--------------------------------------------------
+
+Test 1: RAW unchanged -> CLEAN skipped correctly     PASS
+Test 2: RAW row_count changed -> CLEAN forced rebuild PASS
+Test 3: RAW last_ts changed -> CLEAN forced rebuild   PASS
+Test 4: CLEAN hash changed -> RESEARCH forced rebuild PASS
+
+All tests passed: YES
+
+--------------------------------------------------
+MANIFEST SAMPLE (SPX500 D1 2026):
+--------------------------------------------------
+
+RAW:
+  sha256: 940a6b602e60...
+  row_count: 38
+  first_timestamp: 2026-01-02 00:00:00
+  last_timestamp: 2026-02-25 00:00:00
+
+CLEAN:
+  raw_sha256: 940a6b602e60... (matches RAW)
+  raw_row_count: 38 (matches RAW)
+  clean_sha256: fcdaba40d643...
+  row_count: 38
+
+RESEARCH:
+  clean_sha256: fcdaba40d643... (matches CLEAN)
+  clean_row_count: 38 (matches CLEAN)
+  research_sha256: 44eac11a96c3...
+
+==================================================
+END OF IMPLEMENTATION REPORT
+==================================================

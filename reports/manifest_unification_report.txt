@@ -1,0 +1,94 @@
+==================================================
+MANIFEST UNIFICATION & RAW HARDENING REPORT
+==================================================
+Date: 2026-02-25
+
+CLEAN Custom Manifest Removed: YES
+DVG Manifest Used for CLEAN: YES
+
+RAW Manifest Extended:
+  schema_version: YES
+  columns: YES
+  interval_seconds: YES
+
+Backward Compatibility Verified: YES
+
+Staleness Logic Still Functional: YES
+
+--------------------------------------------------
+CHANGES MADE:
+--------------------------------------------------
+
+1. raw_update_sop17.py — Part B
+   _write_raw_manifest() upgraded:
+   + schema_version: "1.0.0"
+   + columns: list(df.columns)
+   + interval_seconds: computed from TF string
+
+2. clean_rebuild_sop17.py — Parts A + C
+   REMOVED: _write_clean_manifest() [custom]
+   ADDED: _write_clean_manifest_dvg() [DVG-based]
+     - Uses dvg.generate_clean_manifest(clean_path)
+     - Extends with raw_sha256, raw_row_count, raw_last_timestamp
+     - Saves per-file atomically
+
+   MODIFIED: _check_raw_staleness()
+     - Missing RAW manifest: regenerates on-the-fly
+     - Prints [WARN] and computes sha256 + row_count directly
+     - No longer returns False silently
+
+3. rebuild_research_sop17.py — No changes needed
+   (Already using _check_clean_staleness + _write_research_manifest)
+
+--------------------------------------------------
+CLEAN MANIFEST SCHEMA (DVG-UNIFIED):
+--------------------------------------------------
+
+{
+  "clean_sha256": "fcdaba40d643...",
+  "bar_count": 38,
+  "first_bar_utc": "2026-01-02T00:00:00Z",
+  "last_bar_utc": "2026-02-25T00:00:00Z",
+  "columns": ["time","open","high","low","close","volume"],
+  "schema_version": "1.0.0",
+  "generated_utc": "2026-02-25T...",
+  "raw_sha256": "940a6b602e60...",      <-- RAW linkage
+  "raw_row_count": 38,                   <-- RAW linkage
+  "raw_last_timestamp": "2026-02-25..."  <-- RAW linkage
+}
+
+--------------------------------------------------
+RAW MANIFEST SCHEMA (UPGRADED):
+--------------------------------------------------
+
+{
+  "schema_version": "1.0.0",
+  "symbol": "SPX500",
+  "feed": "OCTAFX",
+  "timeframe": "1d",
+  "year": 2026,
+  "row_count": 38,
+  "first_timestamp": "2026-01-02 00:00:00",
+  "last_timestamp": "2026-02-25 00:00:00",
+  "columns": ["time","open","high","low","close",
+               "tick_volume","spread","real_volume"],
+  "interval_seconds": 86400,
+  "sha256": "940a6b602e60...",
+  "generated_utc": "2026-02-25T..."
+}
+
+--------------------------------------------------
+TEST RESULTS:
+--------------------------------------------------
+
+Test 1: RAW change -> CLEAN forced rebuild      PASS
+Test 2: CLEAN change -> RESEARCH forced rebuild  PASS
+Test 3: RAW manifest deleted -> regenerated      PASS
+
+Backward Compat: Old-schema manifest works       PASS
+
+All tests passed: YES
+
+==================================================
+END OF REPORT
+==================================================

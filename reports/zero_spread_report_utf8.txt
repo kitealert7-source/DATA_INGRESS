@@ -1,0 +1,102 @@
+﻿ZERO_SPREAD_SYMBOL_REPORT
+--------------------------
+Symbol: AUS200
+  Years affected: 2016
+  % of bars with spread==0: 66.0%
+  Recent bars spread==0? N/A (No 25/26 data in violations)
+
+Symbol: ESP35
+  Years affected: 2016
+  % of bars with spread==0: 69.2%
+  Recent bars spread==0? N/A (No 25/26 data in violations)
+
+Symbol: EURGBP
+  Years affected: 2019
+  % of bars with spread==0: 88.8%
+  Recent bars spread==0? N/A (No 25/26 data in violations)
+
+Symbol: EURJPY
+  Years affected: 2019
+  % of bars with spread==0: 88.8%
+  Recent bars spread==0? N/A (No 25/26 data in violations)
+
+Symbol: EURUSD
+  Years affected: 2019
+  % of bars with spread==0: 88.8%
+  Recent bars spread==0? N/A (No 25/26 data in violations)
+
+Symbol: EUSTX50
+  Years affected: 2016
+  % of bars with spread==0: 61.4%
+  Recent bars spread==0? N/A (No 25/26 data in violations)
+
+Symbol: FRA40
+  Years affected: 2016
+  % of bars with spread==0: 65.2%
+  Recent bars spread==0? N/A (No 25/26 data in violations)
+
+Symbol: GBPAUD
+  Years affected: 2019
+  % of bars with spread==0: 88.8%
+  Recent bars spread==0? N/A (No 25/26 data in violations)
+
+Symbol: GBPJPY
+  Years affected: 2019
+  % of bars with spread==0: 88.8%
+  Recent bars spread==0? N/A (No 25/26 data in violations)
+
+Symbol: GBPNZD
+  Years affected: 2019
+  % of bars with spread==0: 88.8%
+  Recent bars spread==0? N/A (No 25/26 data in violations)
+
+Symbol: JPN225
+  Years affected: 2016, 2019
+  % of bars with spread==0: 83.2%
+  Recent bars spread==0? N/A (No 25/26 data in violations)
+
+Symbol: NAS100
+  Years affected: 2016, 2019
+  % of bars with spread==0: 89.0%
+  Recent bars spread==0? N/A (No 25/26 data in violations)
+
+Symbol: NZDJPY
+  Years affected: 2019
+  % of bars with spread==0: 88.8%
+  Recent bars spread==0? N/A (No 25/26 data in violations)
+
+Symbol: NZDUSD
+  Years affected: 2019
+  % of bars with spread==0: 88.8%
+  Recent bars spread==0? N/A (No 25/26 data in violations)
+
+Symbol: SPX500
+  Years affected: 2016, 2019
+  % of bars with spread==0: 81.3%
+  Recent bars spread==0? N/A (No 25/26 data in violations)
+
+Symbol: UK100
+  Years affected: 2016, 2019
+  % of bars with spread==0: 84.3%
+  Recent bars spread==0? N/A (No 25/26 data in violations)
+
+Symbol: US30
+  Years affected: 2016, 2019
+  % of bars with spread==0: 81.3%
+  Recent bars spread==0? N/A (No 25/26 data in violations)
+
+Symbol: USDCAD
+  Years affected: 2019
+  % of bars with spread==0: 88.8%
+  Recent bars spread==0? N/A (No 25/26 data in violations)
+
+Symbol: USDCHF
+  Years affected: 2019
+  % of bars with spread==0: 88.8%
+  Recent bars spread==0? N/A (No 25/26 data in violations)
+
+Symbol: XAUUSD
+  Years affected: 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026
+  % of bars with spread==0: 100.0%
+  Recent bars spread==0? YES
+

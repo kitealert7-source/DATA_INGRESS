@@ -1,0 +1,31 @@
+﻿GLOBAL_BOUNDARY_ALIGNMENT_REPORT
+---------------------------------
+Total RAW partitions scanned: 1971
+Total CLEAN partitions scanned: 1958
+Total RESEARCH partitions scanned: 1931
+
+RAW->CLEAN mismatches: 0
+CLEAN->RESEARCH boundary violations: 0
+Missing partitions: 40
+
+- missing: BTCUSD 2025 MT5
+- missing: BTCUSD 2026 MT5
+- missing: BTCUSD 2025 MT5
+- missing: BTCUSD 2026 MT5
+- missing: ETHUSD 2025 MT5
+- missing: ETHUSD 2026 MT5
+- missing: ETHUSD 2024 MT5
+- missing: ETHUSD 2025 MT5
+- missing: ETHUSD 2026 MT5
+- missing: US10Y 1d 2000
+- missing: US10Y 1d 2001
+- missing: US10Y 1d 2002
+- missing: US10Y 1d 2003
+- missing: US10Y 1d 2004
+- missing: US10Y 1d 2005
+- missing: US10Y 1d 2006
+- missing: US10Y 1d 2007
+- missing: US10Y 1d 2008
+- missing: US10Y 1d 2009
+- missing: US10Y 1d 2010
+  ... and 20 more

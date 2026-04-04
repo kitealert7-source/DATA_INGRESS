@@ -1,0 +1,324 @@
+==================================================
+DATA INTEGRITY SAFEGUARD INVENTORY
+==================================================
+Audit Date: 2026-02-25
+Scope: DATA_INGRESS pipeline (RAW -> CLEAN -> RESEARCH)
+Method: Static code analysis (read-only)
+==================================================
+
+
+[RAW LAYER PROTECTIONS]
+==================================================
+
+1. Timeframe Delta Guard (NEW)
+   Location: raw_update_sop17.py:421-453 (validate_timeframe_delta)
+   Called at: raw_update_sop17.py:474
+   Protects Against: MN1/W1 bars returned by broker for D1/4H/1H
+   Trigger: median delta > 7d (D1), > 0.5d (4H), > 0.2d (1H)
+   Failure: RuntimeError raised -> write BLOCKED
+   Bypass: len(df) < 10 -> skips check (small incremental batches)
+   Strength: HIGH
+
+2. Timestamp Monotonicity Enforcement
+   Location: raw_update_sop17.py:232-233, 260-261 (prepare_atomic_append)
+   Protects Against: Out-of-order timestamps in merged data
+   Trigger: combined['time'].is_monotonic_increasing == False
+   Failure: ValueError raised -> write BLOCKED
+   Strength: HIGH
+
+3. Duplicate Timestamp Deduplication
+   Location: raw_update_sop17.py:205, 229, 257 (prepare_atomic_append)
+   Protects Against: Duplicate rows from overlapping fetches
+   Trigger: .drop_duplicates(subset=['time'], keep='first')
+   Failure: Silent removal (keeps earliest)
+   Strength: HIGH
+
+4. Early Exit Skip (No-New-Data Guard)
+   Location: raw_update_sop17.py:188-195
+   Protects Against: Unnecessary rewrites when no new data exists
+   Trigger: max_new <= max_existing_timestamp
+   Failure: Returns (0, True) -> skip
+   Strength: MEDIUM
+
+5. Backfill Cutoff (2007-01-01)
+   Location: raw_update_sop17.py:475-479
+   Protects Against: Ingesting data before 2007 (pre-system epoch)
+   Trigger: df['time'] < '2007-01-01'
+   Failure: Silent filter (rows removed)
+   Strength: MEDIUM
+
+6. Strict Forward Filter (Incremental Mode)
+   Location: raw_update_sop17.py:483-484
+   Protects Against: Re-ingesting already-written bars
+   Trigger: df['time'] <= from_date in incremental mode
+   Failure: Silent filter
+   Strength: MEDIUM
+
+7. Atomic File Write (os.replace)
+   Location: raw_update_sop17.py:404 (save_data -> prepare_atomic_append)
+   Protects Against: Partial/corrupt writes, power failure mid-write
+   Trigger: Writes to .tmp first, then atomic os.replace()
+   Failure: If validation fails -> .tmp deleted, original untouched
+   Strength: HIGH
+
+8. Disk Sync (fsync)
+   Location: raw_update_sop17.py:277-278
+   Protects Against: Data cached in OS buffer not reaching disk
+   Trigger: os.fsync(f_out.fileno()) after stream write
+   Failure: N/A (always runs)
+   Strength: HIGH
+
+9. SOP17 Validation Gate (Pre-Commit)
+   Location: raw_update_sop17.py:366 (validate_raw_extended before commit)
+   Protects Against: Invalid data reaching permanent storage
+   Trigger: SOP17Validator.validate_raw_extended() returns valid=False
+   Failure: ROLLBACK -> .tmp deleted, original file preserved
+   Strength: HIGH
+
+10. Resampling Artifact Detection (Validator)
+    Location: dataset_validator_sop17.py:192-198
+    Protects Against: Wrong-timeframe data (median interval != filename TF)
+    Trigger: abs(median_delta - interval_seconds) > 1.0
+    Failure: ValidationResult.valid = False -> HARD FAIL
+    NOTE: This EXISTED before the delta guard but only catches it
+          during validation (post-fetch), not pre-write.
+    Strength: HIGH
+
+11. Duplicate Timestamps (Validator)
+    Location: dataset_validator_sop17.py:204-209
+    Protects Against: Duplicate timestamps in final file
+    Trigger: duplicated().sum() > 0
+    Failure: HARD FAIL
+    Strength: HIGH
+
+12. Non-Monotonic Timestamps (Validator)
+    Location: dataset_validator_sop17.py:211-215
+    Protects Against: Out-of-order timestamps in final file
+    Trigger: is_monotonic_increasing == False
+    Failure: HARD FAIL
+    Strength: HIGH
+
+13. Empty File Detection (Validator)
+    Location: dataset_validator_sop17.py:183-187
+    Protects Against: Empty CSV files
+    Trigger: bars_total == 0
+    Failure: HARD FAIL
+    Strength: MEDIUM
+
+14. Missing Time Column (Validator)
+    Location: dataset_validator_sop17.py:172-176
+    Protects Against: CSV without 'time' column
+    Trigger: 'time' not in df.columns
+    Failure: HARD FAIL
+    Strength: HIGH
+
+15. Filename Convention Enforcement (Validator)
+    Location: dataset_validator_sop17.py:78-107
+    Protects Against: Non-SOP naming (legacy, wrong format)
+    Trigger: Regex mismatch: [ASSET]_[FEED]_[TF]_[YEAR]_[TYPE].csv
+    Failure: SOFT FAIL (logged, processing continues)
+    Strength: LOW
+
+16. Gap Detection (Zero Tolerance)
+    Location: dataset_validator_sop17.py:221-300
+    Protects Against: Missing bars beyond asset-class tolerance
+    Trigger: max_gap > gap_tolerance_bars per asset class
+    Failure: HARD FAIL
+    Strength: HIGH
+
+17. Year Segmentation
+    Location: raw_update_sop17.py:323-330 (save_data)
+    Protects Against: Year-mixed files
+    Trigger: df['time'].dt.year splits into per-year files
+    Failure: N/A (always applied)
+    Strength: MEDIUM
+
+
+[CLEAN LAYER PROTECTIONS]
+==================================================
+
+18. Zero/Negative Price Filter
+    Location: clean_rebuild_sop17.py:242-249 (apply_clean_logic)
+    Protects Against: Corrupt OHLC prices (zero, negative, H < L)
+    Trigger: open/high/low/close <= 0 OR high < low
+    Failure: Silent removal (rows filtered out)
+    Strength: MEDIUM
+
+19. RAW Monotonicity Pre-Check
+    Location: clean_rebuild_sop17.py:311-316
+    Protects Against: Processing non-monotonic RAW input
+    Trigger: is_monotonic_increasing == False OR is_unique == False
+    Failure: ABORT (return, no file written)
+    Strength: HIGH
+
+20. Atomic Clean Append + Validation
+    Location: clean_rebuild_sop17.py:334, 339, 363-365
+    Protects Against: Invalid CLEAN files, partial writes
+    Trigger: prepare_atomic_clean_append -> validate_clean -> os.replace
+    Failure: ROLLBACK -> .tmp deleted
+    Strength: HIGH
+
+21. Timestamp Skip Logic (CLEAN vs RAW)
+    Location: clean_rebuild_sop17.py:277-289
+    Protects Against: Redundant rebuilds when no new data
+    Trigger: max_raw_ts <= max_clean_ts
+    Failure: Skip (return)
+    Strength: MEDIUM
+
+
+[RESEARCH LAYER PROTECTIONS]
+==================================================
+
+22. CLEAN Input Validation
+    Location: rebuild_research_sop17.py:336-339
+    Protects Against: Non-monotonic or duplicate CLEAN input
+    Trigger: is_monotonic_increasing == False OR is_unique == False
+    Failure: ValueError raised -> write BLOCKED
+    Strength: HIGH
+
+23. OctaFX Execution Price Governance (ADDENDUM)
+    Location: dataset_validator_sop17.py:329-406
+    Protects Against: Forbidden hybrid state (RESEARCH OHLC == CLEAN OHLC
+                      with octafx_exec model, indicating BID prices instead
+                      of ASK-based execution prices)
+    Trigger: spread == 0 AND OHLC identical between CLEAN and RESEARCH
+    Failure: HARD FAIL -> validate_research returns False
+    Strength: HIGH
+
+24. Lineage Tracking (Per-File)
+    Location: rebuild_research_sop17.py (process_file -> dvg.generate_lineage)
+    Records: dataset_version, CLEAN SHA256, RESEARCH SHA256,
+             execution_model_version, generation_timestamp, bar ranges
+    Saved: {research_basename}_lineage.json (atomic write)
+    Strength: MEDIUM
+
+25. Pipeline Hash Registry (Global)
+    Location: rebuild_research_sop17.py:169-236 (queue_pipeline_hash, commit_registry)
+    Protects Against: Unauthorized CLEAN->RESEARCH rebuilds, version drift
+    Trigger: registry_key mismatch on clean_sha256 or exec_model_version
+    Failure: RuntimeError -> ABORT entire pipeline
+    Strength: HIGH
+
+26. Dataset Version Governor (Structural Versioning)
+    Location: dataset_version_governor_v17.py (DatasetVersionGovernor class)
+    Features:
+      - SHA256 hashing of CLEAN files (skipping comment headers)
+      - Structural version format: RESEARCH_vR_EXECvE_SESSIONvS
+      - Version bump detection (CLEAN hash change, model change, session change)
+      - Clean manifest generation (bar_count, first/last timestamps, columns)
+      - Atomic JSON writes (_save_json_atomic)
+      - Exclusive directory-level write locking (acquire_lock/release_lock)
+      - Legacy version migration support
+    Strength: HIGH
+
+
+[CROSS-LAYER PROTECTIONS]
+==================================================
+
+EXISTS:
+  - Timestamp skip logic: RAW->CLEAN and CLEAN->RESEARCH both check
+    max_ts comparisons before processing (prevents redundant rebuilds)
+  - CLEAN validates RAW monotonicity before processing (line 311-316)
+  - RESEARCH validates CLEAN monotonicity before processing (line 336-339)
+  - Pipeline hash registry cross-checks CLEAN SHA and execution model
+  - OctaFX governance compares RESEARCH OHLC against CLEAN OHLC
+
+DOES NOT EXIST:
+  - RAW hash comparison across runs
+  - Timestamp range mismatch detection (RAW 38 rows vs CLEAN 7 rows)
+  - Downstream invalidation triggers when RAW is corrected
+  - Dependency graph enforcement (no DAG-based staleness propagation)
+  - Automated staleness detection across layers
+  - Cross-symbol consistency checks
+
+
+[LOGGING & ALERTING]
+==================================================
+
+EXISTS:
+  - Ingestion failures: Printed to stdout with [ERROR], [SKIP], [FAIL] tags
+  - Validation failures: Printed with !!! CRITICAL VALIDATION FAILURE !!!
+  - Metrics JSON: Written to LOGS/DATA_PIPELINE/metrics_{timestamp}.json
+  - Phase 1 Metrics Report: Written to reports/RAW_UPDATE_PHASE1_METRICS.md
+  - Lineage JSON: one file per RESEARCH dataset
+  - Registry: Global pipeline hash registry JSON
+
+DOES NOT EXIST:
+  - Persistent structured alert log (no central audit_log.json)
+  - Blocked-write event log
+  - Delta guard trigger event logging
+  - Email/webhook/external alerting on corruption detection
+  - Historical audit trail of validation failures
+
+
+==================================================
+DEFENSIVE POSTURE ASSESSMENT
+==================================================
+
+Overall Defensive Posture: MODERATE-STRONG
+
+The pipeline has strong per-layer protections (monotonicity, dedup,
+atomic writes, validation gates, hash-based versioning). The recently
+added delta guard closes the MN1 contamination vector.
+
+However, cross-layer coordination is weak. The system does not detect
+when upstream corrections invalidate downstream datasets.
+
+
+BLIND SPOTS IDENTIFIED:
+--------------------------------------------------
+1. NO DOWNSTREAM INVALIDATION TRIGGER
+   When RAW is corrected (e.g., SPX500 7->38 rows), CLEAN and RESEARCH
+   remain stale. The timestamp skip logic (max_raw_ts <= max_clean_ts)
+   actively PREVENTS rebuilds when CLEAN has future timestamps from
+   corrupt data. Requires manual delete + rebuild.
+
+2. NO ROW COUNT SANITY CHECK
+   Neither the validator nor the ingestion path checks if row count
+   changes dramatically between runs (e.g., 38 -> 7 rows). A broker
+   returning vastly fewer rows would pass all current checks.
+
+3. NO FUTURE TIMESTAMP BLOCKING IN VALIDATOR
+   The validator checks monotonicity and gaps but does NOT reject
+   timestamps beyond current date. Future dates from broker pass through.
+
+4. NO CROSS-LAYER ROW COUNT COMPARISON
+   RAW(38) vs CLEAN(7) mismatch is never detected. Each layer only
+   checks its own internal consistency.
+
+5. DELTA GUARD ONLY COVERS D1, 4H, 1H
+   Lower timeframes (1m, 5m, 15m, 30m) have no median delta guard.
+   Monthly contamination on 15m data would pass silently.
+
+6. NO PERSISTENT AUDIT LOG
+   Validation failures, guard triggers, and blocked writes are only
+   printed to stdout. If terminal output is not captured, events are lost.
+
+
+RECOMMENDATIONS:
+--------------------------------------------------
+1. Add downstream staleness detector:
+   After RAW write, compare RAW row_count / last_ts against CLEAN.
+   If RAW has more rows or newer last_ts -> flag CLEAN as stale.
+
+2. Add future timestamp blocker:
+   In validator or delta guard, reject any timestamp > NOW + 24h.
+
+3. Add row count regression guard:
+   If existing file has N rows and new data produces < N*0.5 rows
+   for the same year, block the write.
+
+4. Extend delta guard to all timeframes:
+   Add thresholds for 1m (> 0.01 days), 5m (> 0.05 days),
+   15m (> 0.1 days), 30m (> 0.15 days).
+
+5. Add persistent audit event log:
+   Write JSON events for: guard triggers, validation failures,
+   blocked writes, skipped files. File: LOGS/audit_events.jsonl
+
+6. Add cross-layer row count assertion:
+   After CLEAN rebuild, assert CLEAN rows ~= RAW rows for same
+   year file. Large divergence -> alert.
+==================================================
+END OF SAFEGUARD INVENTORY
+==================================================

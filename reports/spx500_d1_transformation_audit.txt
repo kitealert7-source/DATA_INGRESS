@@ -1,0 +1,88 @@
+============================================================
+SPX500 D1 TRANSFORMATION AUDIT (2026)
+============================================================
+
+--- STEP 1: RAW vs CLEAN ---
+------------------------------------------------------------
+RAW File: SPX500_OCTAFX_1d_2026_RAW.csv
+RAW Rows: 38
+RAW First: 2026-01-02 00:00:00
+RAW Last:  2026-02-25 00:00:00
+RAW Median Delta: 1.0 days
+
+CLEAN File: SPX500_OCTAFX_1d_2026_CLEAN.csv
+CLEAN Rows: 7
+CLEAN First: 2026-02-01 00:00:00
+CLEAN Last:  2026-12-01 00:00:00
+CLEAN Median Delta: 31.0 days
+
+Timestamp Match: NO
+Missing in CLEAN: 38
+Extra in CLEAN: 7
+  + 2026-02-01 00:00:00
+  + 2026-05-01 00:00:00
+  + 2026-06-01 00:00:00
+  + 2026-07-01 00:00:00
+  + 2026-08-01 00:00:00
+  + 2026-09-01 00:00:00
+  + 2026-12-01 00:00:00
+
+--- STEP 2: CLEAN vs RESEARCH ---
+------------------------------------------------------------
+RESEARCH File: SPX500_OCTAFX_1d_2026_RESEARCH.csv
+RESEARCH Rows: 7
+RESEARCH First: 2026-02-01 00:00:00
+RESEARCH Last:  2026-12-01 00:00:00
+Feature Columns Count: 9
+Columns: ['time', 'open', 'high', 'low', 'close', 'session', 'commission_cash', 'spread', 'slippage']
+Columns w/ >50% NaN: None
+Negative Volume: NO
+Future Timestamps: YES
+RESEARCH Median Delta: 31.0 days
+Timestamp Match w/ CLEAN: YES
+
+--- STEP 3: Structural Integrity Check ---
+------------------------------------------------------------
+
+RAW:
+  Contains 2026-06-01: NO
+  Contains 2026-12-01: NO
+  All 1st-of-month:    NO
+  Max delta (days):    4.0
+  Delta > 7 days:      NO
+  Monotonic:           YES
+
+CLEAN:
+  Contains 2026-06-01: YES
+  Contains 2026-12-01: YES
+  All 1st-of-month:    YES
+  Max delta (days):    91.0
+  Delta > 7 days:      YES
+  Monotonic:           YES
+  --> MONTHLY CONTAMINATION DETECTED
+
+RESEARCH:
+  Contains 2026-06-01: YES
+  Contains 2026-12-01: YES
+  All 1st-of-month:    YES
+  Max delta (days):    91.0
+  Delta > 7 days:      YES
+  Monotonic:           YES
+  --> MONTHLY CONTAMINATION DETECTED
+
+============================================================
+FINAL VERDICT
+============================================================
+
+TRANSFORMATION STATUS:
+  RAW -> CLEAN:    BROKEN
+  CLEAN -> RESEARCH: BROKEN
+
+Residual Monthly Contamination: YES
+Rebuild Required: YES
+
+ACTION REQUIRED:
+  - CLEAN/RESEARCH contain monthly contamination from old corrupt RAW
+  - Must rebuild SPX500 D1 CLEAN and RESEARCH from corrected RAW
+
+============================================================

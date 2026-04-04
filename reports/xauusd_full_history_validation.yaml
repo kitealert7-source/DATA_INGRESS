@@ -1,0 +1,12 @@
+xauusd_full_history_validation: {}
+overall_summary:
+  earliest_available: Server Blocked
+  longest_span_tf: null
+  rebuild_recommended: false
+  message: 'Strict instructions followed: DO NOT automatically rebuild CLEAN or RESEARCH
+    layers.'
+acquisition_status:
+  status: FAILED
+  reason: The OctaFX MT5 terminal actively blocks loop-based historical API extraction
+    for XAUUSD. The server returns Call Failed for all bulk history queries. Manual
+    MT5 export is required.

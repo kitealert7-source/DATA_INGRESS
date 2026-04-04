@@ -1,0 +1,66 @@
+# RESEARCH Rebuild Phase 3 Metrics (Incremental Append)
+
+## Global I/O Footprint
+- **Total Read (MB):** 316.43 MB
+- **Total Write (MB):** 326.47 MB
+- **Total Runtime:** 135 seconds
+- **Skipped Writes (No New Data):** 1671
+- **Datasets Scanned (With New Rows):** 260
+- **Datasets Scanned (Without New Rows):** 1671
+- **Registry Updates Count:** 234
+
+## Dataset Incremental Details (Sample)
+| File | Status | Bars Appended | Rows Before | Rows After | Read MB | Write MB | Latency (ms) |
+|---|---|---|---|---|---|---|---|
+| AUDJPY_OCTAFX_15m_2026_RESEARCH.csv | PASS | 6236 | 0 | 6236 | 0.41 | 0.43 | 183 |
+| AUDJPY_OCTAFX_1d_2026_RESEARCH.csv | PASS | 69 | 0 | 69 | 0.00 | 0.00 | 93 |
+| AUDJPY_OCTAFX_1h_2026_RESEARCH.csv | PASS | 1584 | 0 | 1584 | 0.11 | 0.11 | 109 |
+| AUDJPY_OCTAFX_1m_2026_RESEARCH.csv | PASS | 94678 | 0 | 94678 | 6.31 | 6.59 | 1186 |
+| AUDJPY_OCTAFX_30m_2026_RESEARCH.csv | PASS | 3168 | 0 | 3168 | 0.21 | 0.22 | 136 |
+| AUDJPY_OCTAFX_4h_2026_RESEARCH.csv | PASS | 399 | 0 | 399 | 0.03 | 0.03 | 102 |
+| AUDJPY_OCTAFX_5m_2026_RESEARCH.csv | PASS | 18917 | 0 | 18917 | 1.25 | 1.31 | 324 |
+| AUDNZD_OCTAFX_15m_2026_RESEARCH.csv | PASS | 6161 | 0 | 6161 | 0.46 | 0.48 | 180 |
+| AUDNZD_OCTAFX_1d_2026_RESEARCH.csv | PASS | 69 | 0 | 69 | 0.00 | 0.00 | 92 |
+| AUDNZD_OCTAFX_1h_2026_RESEARCH.csv | PASS | 1584 | 0 | 1584 | 0.12 | 0.12 | 129 |
+| AUDNZD_OCTAFX_1m_2026_RESEARCH.csv | PASS | 94593 | 0 | 94593 | 7.11 | 7.42 | 1227 |
+| AUDNZD_OCTAFX_30m_2026_RESEARCH.csv | PASS | 3133 | 0 | 3133 | 0.23 | 0.24 | 169 |
+| AUDNZD_OCTAFX_4h_2026_RESEARCH.csv | PASS | 399 | 0 | 399 | 0.03 | 0.03 | 91 |
+| AUDNZD_OCTAFX_5m_2026_RESEARCH.csv | PASS | 18532 | 0 | 18532 | 1.40 | 1.46 | 327 |
+| AUDUSD_OCTAFX_15m_2026_RESEARCH.csv | PASS | 6100 | 0 | 6100 | 0.44 | 0.46 | 199 |
+| AUDUSD_OCTAFX_1d_2026_RESEARCH.csv | PASS | 69 | 0 | 69 | 0.00 | 0.00 | 97 |
+| AUDUSD_OCTAFX_1h_2026_RESEARCH.csv | PASS | 1584 | 0 | 1584 | 0.11 | 0.12 | 111 |
+| AUDUSD_OCTAFX_1m_2026_RESEARCH.csv | PASS | 94629 | 0 | 94629 | 6.94 | 7.24 | 1311 |
+| AUDUSD_OCTAFX_30m_2026_RESEARCH.csv | PASS | 3168 | 0 | 3168 | 0.23 | 0.24 | 141 |
+| AUDUSD_OCTAFX_4h_2026_RESEARCH.csv | PASS | 399 | 0 | 399 | 0.03 | 0.03 | 103 |
+| AUDUSD_OCTAFX_5m_2026_RESEARCH.csv | PASS | 18554 | 0 | 18554 | 1.33 | 1.39 | 355 |
+| AUS200_OCTAFX_15m_2026_RESEARCH.csv | PASS | 5559 | 0 | 5559 | 0.41 | 0.42 | 191 |
+| AUS200_OCTAFX_1d_2026_RESEARCH.csv | PASS | 64 | 0 | 64 | 0.00 | 0.00 | 82 |
+| AUS200_OCTAFX_1h_2026_RESEARCH.csv | PASS | 1454 | 0 | 1454 | 0.10 | 0.11 | 113 |
+| AUS200_OCTAFX_1m_2026_RESEARCH.csv | PASS | 83371 | 0 | 83371 | 6.23 | 6.38 | 1161 |
+| AUS200_OCTAFX_30m_2026_RESEARCH.csv | PASS | 2844 | 0 | 2844 | 0.21 | 0.21 | 136 |
+| AUS200_OCTAFX_4h_2026_RESEARCH.csv | PASS | 380 | 0 | 380 | 0.03 | 0.03 | 104 |
+| AUS200_OCTAFX_5m_2026_RESEARCH.csv | PASS | 16423 | 0 | 16423 | 1.23 | 1.26 | 302 |
+| BTC_DELTA_15m_2026_RESEARCH.csv | PASS | 8929 | 0 | 8929 | 0.66 | 0.67 | 201 |
+| BTC_DELTA_1d_2026_RESEARCH.csv | PASS | 94 | 0 | 94 | 0.01 | 0.01 | 98 |
+| BTC_DELTA_1h_2026_RESEARCH.csv | PASS | 2233 | 0 | 2233 | 0.17 | 0.17 | 122 |
+| BTC_DELTA_1m_2026_RESEARCH.csv | PASS | 133935 | 0 | 133935 | 9.78 | 9.88 | 1653 |
+| BTC_DELTA_3m_2026_RESEARCH.csv | PASS | 44645 | 0 | 44645 | 3.28 | 3.32 | 617 |
+| BTC_DELTA_4h_2026_RESEARCH.csv | PASS | 559 | 0 | 559 | 0.04 | 0.04 | 111 |
+| BTC_DELTA_5m_2026_RESEARCH.csv | PASS | 26787 | 0 | 26787 | 1.98 | 2.00 | 440 |
+| BTCUSD_OCTAFX_15m_2026_RESEARCH.csv | PASS | 8788 | 0 | 8788 | 0.71 | 0.74 | 215 |
+| BTCUSD_OCTAFX_1d_2026_RESEARCH.csv | PASS | 93 | 0 | 93 | 0.01 | 0.01 | 86 |
+| BTCUSD_OCTAFX_1h_2026_RESEARCH.csv | PASS | 2205 | 0 | 2205 | 0.18 | 0.18 | 114 |
+| BTCUSD_OCTAFX_1m_2026_RESEARCH.csv | PASS | 118012 | 0 | 118012 | 9.54 | 9.87 | 1705 |
+| BTCUSD_OCTAFX_30m_2026_RESEARCH.csv | PASS | 4395 | 0 | 4395 | 0.36 | 0.37 | 157 |
+| BTCUSD_OCTAFX_3m_2026_RESEARCH.csv | PASS | 43482 | 0 | 43482 | 3.53 | 3.64 | 737 |
+| BTCUSD_OCTAFX_4h_2026_RESEARCH.csv | PASS | 559 | 0 | 559 | 0.04 | 0.05 | 104 |
+| BTCUSD_OCTAFX_5m_2026_RESEARCH.csv | PASS | 26188 | 0 | 26188 | 2.13 | 2.19 | 480 |
+| CADJPY_OCTAFX_15m_2026_RESEARCH.csv | PASS | 6228 | 0 | 6228 | 0.41 | 0.43 | 192 |
+| CADJPY_OCTAFX_1d_2026_RESEARCH.csv | PASS | 69 | 0 | 69 | 0.00 | 0.00 | 92 |
+| CADJPY_OCTAFX_1h_2026_RESEARCH.csv | PASS | 1584 | 0 | 1584 | 0.11 | 0.11 | 116 |
+| CADJPY_OCTAFX_1m_2026_RESEARCH.csv | PASS | 94597 | 0 | 94597 | 6.83 | 7.13 | 1299 |
+| CADJPY_OCTAFX_30m_2026_RESEARCH.csv | PASS | 3168 | 0 | 3168 | 0.21 | 0.22 | 158 |
+| CADJPY_OCTAFX_4h_2026_RESEARCH.csv | PASS | 399 | 0 | 399 | 0.03 | 0.03 | 94 |
+| CADJPY_OCTAFX_5m_2026_RESEARCH.csv | PASS | 18937 | 0 | 18937 | 1.28 | 1.34 | 326 |
+
+**Integrity Confirmation:** Incremental RESEARCH rebuild verified. Registry writes are now a single atomic commit.

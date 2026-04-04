@@ -1,0 +1,69 @@
+{
+    "timestamp_utc": "2026-03-01T17:53:18.335976",
+    "status": "SUCCESS",
+    "timeframes": {
+        "1m": {
+            "final_earliest_timestamp": "2025-09-10T08:35:00+00:00",
+            "final_latest_timestamp": "2026-02-27T23:59:00+00:00",
+            "total_rows_added_across_years": 0,
+            "duplicates_removed_during_merge": 100000,
+            "monotonic_check": "PASS"
+        },
+        "5m": {
+            "final_earliest_timestamp": "2024-07-18T08:05:00+00:00",
+            "final_latest_timestamp": "2026-02-27T23:55:00+00:00",
+            "total_rows_added_across_years": 0,
+            "duplicates_removed_during_merge": 100236,
+            "monotonic_check": "PASS"
+        },
+        "15m": {
+            "final_earliest_timestamp": "2021-12-06T19:15:00+00:00",
+            "final_latest_timestamp": "2026-02-27T23:45:00+00:00",
+            "total_rows_added_across_years": 48874,
+            "duplicates_removed_during_merge": 51126,
+            "monotonic_check": "PASS"
+        },
+        "30m": {
+            "final_earliest_timestamp": "2017-09-05T14:00:00+00:00",
+            "final_latest_timestamp": "2026-02-27T23:30:00+00:00",
+            "total_rows_added_across_years": 74430,
+            "duplicates_removed_during_merge": 25570,
+            "monotonic_check": "PASS"
+        },
+        "1h": {
+            "final_earliest_timestamp": "2014-04-03T00:00:00+00:00",
+            "final_latest_timestamp": "2026-02-27T23:00:00+00:00",
+            "total_rows_added_across_years": 52647,
+            "duplicates_removed_during_merge": 12793,
+            "monotonic_check": "PASS"
+        },
+        "4h": {
+            "final_earliest_timestamp": "2014-04-03T00:00:00+00:00",
+            "final_latest_timestamp": "2026-02-27T20:00:00+00:00",
+            "total_rows_added_across_years": 13946,
+            "duplicates_removed_during_merge": 3347,
+            "monotonic_check": "PASS"
+        },
+        "1d": {
+            "final_earliest_timestamp": "2014-04-03T00:00:00+00:00",
+            "final_latest_timestamp": "2026-02-27T00:00:00+00:00",
+            "total_rows_added_across_years": 2510,
+            "duplicates_removed_during_merge": 558,
+            "monotonic_check": "PASS"
+        },
+        "1w": {
+            "final_earliest_timestamp": "2014-04-06T00:00:00+00:00",
+            "final_latest_timestamp": "2026-02-22T00:00:00+00:00",
+            "total_rows_added_across_years": 621,
+            "duplicates_removed_during_merge": 0,
+            "monotonic_check": "PASS"
+        },
+        "1mn": {
+            "final_earliest_timestamp": "2014-04-01T00:00:00+00:00",
+            "final_latest_timestamp": "2026-02-01T00:00:00+00:00",
+            "total_rows_added_across_years": 143,
+            "duplicates_removed_during_merge": 0,
+            "monotonic_check": "PASS"
+        }
+    }
+}
