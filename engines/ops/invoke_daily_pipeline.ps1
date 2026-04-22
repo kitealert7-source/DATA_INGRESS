@@ -28,13 +28,26 @@ function Write-Log {
 # Set working directory
 Set-Location $DataIngress
 
-# Load Telegram credentials from user-level env (set via setx)
-# alerts.py reads these at import time; must be present in THIS process before Python starts
+# Load Telegram credentials — try user-scope env first, then fall back to .secrets/telegram.env.
+# Task Scheduler sessions sometimes don't inherit user-level env vars even with Interactive logon.
+# The .secrets/ file is the authoritative fallback and is never committed (see .gitignore).
 $env:TELEGRAM_BOT_TOKEN = [System.Environment]::GetEnvironmentVariable("TELEGRAM_BOT_TOKEN", "User")
 $env:TELEGRAM_CHAT_ID   = [System.Environment]::GetEnvironmentVariable("TELEGRAM_CHAT_ID",   "User")
 
 if (-not $env:TELEGRAM_BOT_TOKEN -or -not $env:TELEGRAM_CHAT_ID) {
-    Write-Log "WARNING: Telegram credentials not found in user environment - alerts will be silent"
+    $TelegramSecretsFile = "$DataIngress\.secrets\telegram.env"
+    if (Test-Path $TelegramSecretsFile) {
+        Get-Content $TelegramSecretsFile | Where-Object { $_ -match '^\s*([^#=\s][^=]*)=(.+)$' } | ForEach-Object {
+            $k = $Matches[1].Trim(); $v = $Matches[2].Trim()
+            if ($k -eq "TELEGRAM_BOT_TOKEN") { $env:TELEGRAM_BOT_TOKEN = $v }
+            if ($k -eq "TELEGRAM_CHAT_ID")   { $env:TELEGRAM_CHAT_ID   = $v }
+        }
+        Write-Log "Telegram credentials loaded from .secrets/telegram.env"
+    }
+}
+
+if (-not $env:TELEGRAM_BOT_TOKEN -or -not $env:TELEGRAM_CHAT_ID) {
+    Write-Log "WARNING: Telegram credentials not found in user environment or .secrets/telegram.env - alerts will be silent"
 }
 
 Write-Log "=== DAILY PIPELINE INVOCATION ==="
@@ -44,23 +57,26 @@ Write-Log "Master Script: $DailyPipeline"
 
 # Execute master daily pipeline with pinned Python
 # Note: Using Start-Process to avoid PowerShell exception issues with stderr
-$process = Start-Process -FilePath $PYTHON -ArgumentList $DailyPipeline -WorkingDirectory $DataIngress -Wait -NoNewWindow -PassThru -RedirectStandardOutput "$LogDir\stdout_temp.log" -RedirectStandardError "$LogDir\stderr_temp.log"
+$stdoutTmp = "$LogDir\stdout_temp_$PID.log"
+$stderrTmp = "$LogDir\stderr_temp_$PID.log"
+
+$process = Start-Process -FilePath $PYTHON -ArgumentList $DailyPipeline -WorkingDirectory $DataIngress -Wait -NoNewWindow -PassThru -RedirectStandardOutput $stdoutTmp -RedirectStandardError $stderrTmp
 
 $exitCode = $process.ExitCode
 
 # Append stdout to main log
-if (Test-Path "$LogDir\stdout_temp.log") {
-    Get-Content "$LogDir\stdout_temp.log" | ForEach-Object { Write-Log "PIPELINE: $_" }
-    Remove-Item "$LogDir\stdout_temp.log" -Force
+if (Test-Path $stdoutTmp) {
+    Get-Content $stdoutTmp | ForEach-Object { Write-Log "PIPELINE: $_" }
+    Remove-Item $stdoutTmp -Force
 }
 
 # Append stderr to main log (if any)
-if (Test-Path "$LogDir\stderr_temp.log") {
-    $stderrContent = Get-Content "$LogDir\stderr_temp.log" -Raw
+if (Test-Path $stderrTmp) {
+    $stderrContent = Get-Content $stderrTmp -Raw
     if ($stderrContent.Trim()) {
         Write-Log "STDERR: $stderrContent"
     }
-    Remove-Item "$LogDir\stderr_temp.log" -Force
+    Remove-Item $stderrTmp -Force
 }
 
 Write-Log "Daily Pipeline Exit Code: $exitCode"

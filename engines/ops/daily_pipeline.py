@@ -19,8 +19,12 @@ import subprocess
 import sys
 import os
 import json
+import atexit
+import socket
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
+
+import psutil
 
 # Alerts — observer only, never raises, NO-OP if env vars absent
 sys.path.insert(0, os.path.dirname(__file__))
@@ -39,6 +43,7 @@ VALIDATOR         = os.path.join(DATA_INGRESS, "engines", "core", "dataset_valid
 CLEAN_REBUILD     = os.path.join(DATA_INGRESS, "engines", "core", "clean_rebuild_sop17.py")
 RESEARCH_REBUILD  = os.path.join(DATA_INGRESS, "engines", "core", "rebuild_research_sop17.py")
 USD_SYNTH                = os.path.join(DATA_INGRESS, "engines", "ops", "build_usd_synth.py")
+NEWS_CALENDAR_BUILD      = os.path.join(DATA_INGRESS, "engines", "ops", "build_news_calendar.py")
 RESEARCH_VALIDATE        = os.path.join(DATA_INGRESS, "engines", "ops", "validate_research_layer.py")
 MISSING_BASELINE_VALIDATE = os.path.join(DATA_INGRESS, "engines", "ops", "validate_missing_baseline.py")
 
@@ -57,6 +62,197 @@ REPORTS_RETENTION_DAYS    = 90   # Daily_Report_*.md only
 # Integrity log rollover — rotate when file exceeds this size
 INTEGRITY_LOG_MAX_MB   = 5.0     # rotate at 5 MB
 INTEGRITY_LOG_KEEP     = 3       # keep last N monthly archives
+
+# PID lock file — prevents overlapping pipeline runs (scheduler + manual)
+# Payload is JSON: {pid, create_time, timestamp_utc, hostname, script}
+# Acquisition is atomic via O_CREAT|O_EXCL; staleness is identity-checked
+# against both psutil.pid_exists() and Process.create_time() (survives PID reuse).
+PIPELINE_LOCK_FILE = os.path.join(DATA_INGRESS, "state", "daily_pipeline.lock")
+
+# Tolerance when comparing process create_time across JSON serialization round-trip.
+# psutil.create_time() on Windows derives from GetProcessTimes (100ns precision);
+# JSON float round-trip preserves IEEE 754 double precision; so sub-ms drift is
+# essentially quantization noise. 1ms is four orders of magnitude tighter than any
+# plausible PID-reuse window while remaining robust against float repr quirks.
+_CREATE_TIME_TOLERANCE_SEC = 0.001
+
+
+def _build_lock_payload() -> dict:
+    """Build the JSON payload describing the current process's lock claim."""
+    pid = os.getpid()
+    try:
+        create_time = psutil.Process(pid).create_time()
+    except (psutil.NoSuchProcess, psutil.AccessDenied, Exception):
+        # Extremely unlikely (we are that process) — fall back to 0.0.
+        # Release-side identity check will skip create_time comparison if ours is 0.0.
+        create_time = 0.0
+    return {
+        "pid": pid,
+        "create_time": create_time,
+        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        "hostname": socket.gethostname(),
+        "script": os.path.abspath(__file__),
+    }
+
+
+def _validate_existing_lock(lock_path: Path) -> tuple[bool, str, dict | None]:
+    """Inspect an existing lock file.
+
+    Returns (is_stale, reason, payload):
+      is_stale = True  -> safe to delete and retry
+        reasons: 'corrupt_file' | 'dead_pid' | 'pid_reuse'
+      is_stale = False -> live owner; caller must abort
+        payload returned so caller can log the owner PID
+    """
+    try:
+        payload = json.loads(lock_path.read_text(encoding="utf-8"))
+        pid = int(payload["pid"])
+        stored_ct = float(payload["create_time"])
+    except Exception:
+        return True, "corrupt_file", None
+
+    if not psutil.pid_exists(pid):
+        return True, "dead_pid", payload
+
+    try:
+        actual_ct = psutil.Process(pid).create_time()
+    except (psutil.NoSuchProcess, psutil.AccessDenied):
+        return True, "dead_pid", payload
+    except Exception:
+        # Can't verify identity — treat as live to avoid false eviction.
+        return False, "", payload
+
+    if stored_ct > 0.0 and abs(actual_ct - stored_ct) > _CREATE_TIME_TOLERANCE_SEC:
+        # Same PID number, but a different process — the original died and
+        # the OS recycled its PID (common after reboots).
+        return True, "pid_reuse", payload
+
+    return False, "", payload
+
+
+def _acquire_pipeline_lock() -> None:
+    """Atomically acquire the pipeline lock.
+
+    Contract:
+      - Atomic create via os.open(O_CREAT|O_EXCL|O_WRONLY). Two processes racing
+        the scheduler cannot both succeed.
+      - If the file already exists, validate the owner: PID must be live AND
+        its create_time must match the one recorded in the lock payload.
+      - Stale lock (dead PID, PID reuse, or corrupt file) is evicted once,
+        then a single atomic-create retry is attempted. Further failure aborts.
+      - Live lock: print [LOCK] Already running and exit(1).
+      - On success, register atexit release.
+    """
+    lock_path = Path(PIPELINE_LOCK_FILE)
+    lock_path.parent.mkdir(parents=True, exist_ok=True)
+
+    payload = _build_lock_payload()
+    payload_bytes = json.dumps(payload, indent=2).encode("utf-8")
+
+    for attempt in (1, 2):
+        # Attempt atomic create. This is the only path that grants the lock.
+        # O_EXCL gives inter-process atomicity on the slot. We write-then-fsync-
+        # then-close while still holding the exclusive fd, so the payload is
+        # durable on disk before any other process could validate it. The only
+        # partial-write window is the <1μs between O_EXCL success and os.write;
+        # a crash there leaves an empty file, which the next run evicts as
+        # corrupt_file.
+        try:
+            fd = os.open(
+                str(lock_path),
+                os.O_CREAT | os.O_EXCL | os.O_WRONLY,
+                0o644,
+            )
+            try:
+                os.write(fd, payload_bytes)
+                os.fsync(fd)
+            finally:
+                os.close(fd)
+            atexit.register(_release_pipeline_lock)
+            print(f"[LOCK] Acquired (PID {payload['pid']})")
+            return
+        except FileExistsError:
+            # Another process (or a stale file) holds the slot — validate.
+            pass
+
+        print(f"[LOCK] Exists -> validating")
+        is_stale, reason, owner_payload = _validate_existing_lock(lock_path)
+
+        if not is_stale:
+            owner_pid = owner_payload.get("pid", "?") if owner_payload else "?"
+            print(f"[LOCK] Already running (PID {owner_pid}). Aborting.")
+            print(f"[LOCK] Lock file: {PIPELINE_LOCK_FILE}")
+            sys.exit(1)
+
+        print(f"[LOCK] Stale (reason={reason})")
+
+        if attempt == 2:
+            # Second attempt also found a lock and declared it stale — something
+            # else is racing us into the slot. Refuse to loop forever.
+            print(f"[LOCK] Unable to acquire after retry. Aborting.")
+            sys.exit(1)
+
+        # Evict stale lock, then retry the atomic create once. No backoff delay —
+        # O_EXCL already guarantees correctness under contention; sleeping only
+        # adds latency. If another process races us into the slot between our
+        # unlink and our retry, the second loop iteration will treat them as a
+        # live owner and abort cleanly.
+        try:
+            lock_path.unlink()
+        except FileNotFoundError:
+            pass
+        except OSError as e:
+            print(f"[LOCK] Could not remove stale lock: {e}. Aborting.")
+            sys.exit(1)
+
+
+def _release_pipeline_lock() -> None:
+    """Release the lock iff this process is still the rightful owner.
+
+    Identity check: PID must match ours AND create_time must match our own.
+    This prevents a foreign lock (written after we crashed and another pipeline
+    started) from being deleted by our atexit handler.
+    """
+    lock_path = Path(PIPELINE_LOCK_FILE)
+    try:
+        if not lock_path.exists():
+            return
+
+        try:
+            payload = json.loads(lock_path.read_text(encoding="utf-8"))
+            owner_pid = int(payload["pid"])
+            owner_ct = float(payload["create_time"])
+        except Exception:
+            # Corrupt lock at release time — leave it; let the next run's
+            # stale-detection handle eviction.
+            print(f"[LOCK WARN] Lock unreadable at release; leaving in place")
+            return
+
+        if owner_pid != os.getpid():
+            print(
+                f"[LOCK WARN] Lock owned by PID {owner_pid}, not current "
+                f"({os.getpid()}); not releasing"
+            )
+            return
+
+        # Verify our own create_time — guards against the pathological case
+        # where the lock was rewritten by a foreign process that happened to
+        # reuse our PID. (Cheap; skipped only if acquisition had no create_time.)
+        if owner_ct > 0.0:
+            try:
+                our_ct = psutil.Process(os.getpid()).create_time()
+                if abs(our_ct - owner_ct) > _CREATE_TIME_TOLERANCE_SEC:
+                    print(f"[LOCK WARN] create_time mismatch at release; not releasing")
+                    return
+            except Exception:
+                # Can't verify — err on the side of not deleting.
+                print(f"[LOCK WARN] Could not verify create_time at release; not releasing")
+                return
+
+        lock_path.unlink()
+        print(f"[LOCK] Released")
+    except OSError as e:
+        print(f"[LOCK WARN] Could not remove lock file: {e}")
 
 
 def cleanup_old_logs(log_dir: str, days: int = LOG_RETENTION_DAYS,
@@ -186,6 +382,7 @@ def generate_daily_report(run_date, datasets_validated):
 | CLEAN Rebuild | PASS |
 | RESEARCH Rebuild | PASS |
 | USD_SYNTH | PASS |
+| NEWS_CALENDAR | PASS |
 | Governance Update | PASS |
 
 ---
@@ -215,9 +412,12 @@ def print_completion_report(run_date, datasets_validated, report_path):
 
 
 def main():
+    # Prevent overlapping runs (scheduler + concurrent manual invocation)
+    _acquire_pipeline_lock()
+
     # Use deterministic Python interpreter (sys.executable)
     python = sys.executable
-    
+
     print("="*60)
     print("ANTI-GRAVITY DAILY PIPELINE — MASTER ORCHESTRATOR")
     print(f"Started: {datetime.now(timezone.utc).isoformat()}")
@@ -242,6 +442,7 @@ def main():
         ("4. RESEARCH Rebuild",       [python, RESEARCH_REBUILD,  "--register-lineage"]),
         ("4.5. RESEARCH Validation",  [python, RESEARCH_VALIDATE]),
         ("5. USD_SYNTH",              [python, USD_SYNTH]),
+        ("5.5. NEWS_CALENDAR",        [python, NEWS_CALENDAR_BUILD]),
     ]
     
     for name, cmd in phases:
