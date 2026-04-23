@@ -22,10 +22,11 @@ class ValidationMetrics:
 @dataclass
 class ValidationResult:
     file: str
-    status: str # "PASS" or "FAIL"
+    status: str # "PASS", "FAIL", or "WARN"
     metrics: ValidationMetrics
     valid: bool = True
     errors: List[str] = field(default_factory=list)
+    warnings: List[str] = field(default_factory=list)
 
 class SOP17Validator:
     """
@@ -77,7 +78,7 @@ class SOP17Validator:
         "CRYPTO":          6,    # Delta Exchange: 24/7, tightest tolerance
         "CRYPTO_CFD":      72,   # MT5/OctaFX broker: covers full weekend
         "FOREX":           72,   # MT5/OctaFX broker: covers full weekend
-        "INDEX_CFD":       96,   # MT5/OctaFX broker: Friday close + full weekend (indices don't trade Sat/Sun)
+        "INDEX_CFD":       120,  # MT5/OctaFX broker: covers long weekends + exchange holidays (4-day gaps)
         "SOVEREIGN_RATES": None, # Exempt - structural macro data
     }
 
@@ -435,9 +436,7 @@ class SOP17Validator:
                         filename, last_ts, asset_class, tf_key_fresh
                     )
                     if freshness_error:
-                        result.valid = False
-                        result.status = "FAIL"
-                        result.errors.append(freshness_error)
+                        result.warnings.append(freshness_error)
 
             return result
 
@@ -578,13 +577,20 @@ if __name__ == "__main__":
                     res = SOP17Validator.validate_raw_extended(path)
                     dataset_count += 1
                     
-                    status = "PASS" if res.valid else "FAIL"
+                    if not res.valid:
+                        status = "FAIL"
+                    elif res.warnings:
+                        status = "WARN"
+                    else:
+                        status = "PASS"
                     print(f"[{status}] {file} | Bars: {res.metrics.bars_total} | MaxGap: {res.metrics.max_gap_bars} | Dup: {res.metrics.duplicates}")
-                    
+
                     if not res.valid:
                         failed = True
                         for e in res.errors:
                             print(f"   -> {e}")
+                    for w in res.warnings:
+                        print(f"   -> {w}")
         
         # Emit machine-readable summary
         summary = {

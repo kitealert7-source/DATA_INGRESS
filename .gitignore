@@ -19,6 +19,7 @@ stale_datasets.txt
 logs/
 LOGS/
 *.log
+validator_output.txt
 
 # ── Temporary / Throwaway Scripts ──
 tmp/

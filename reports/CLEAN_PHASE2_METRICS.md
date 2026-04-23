@@ -1,66 +1,66 @@
 # CLEAN Rebuild Phase 2 Metrics (Incremental Append)
 
 ## Global I/O Footprint
-- **Total Read (MB):** 219.08 MB
-- **Total Write (MB):** 225.99 MB
-- **Total Runtime:** 132 seconds
-- **Skipped Writes (No New Data):** 1723
-- **Datasets Scanned (With New Rows):** 234
-- **Datasets Scanned (Without New Rows):** 1723
+- **Total Read (MB):** 268.81 MB
+- **Total Write (MB):** 270.66 MB
+- **Total Runtime:** 188 seconds
+- **Skipped Writes (No New Data):** 1792
+- **Datasets Scanned (With New Rows):** 232
+- **Datasets Scanned (Without New Rows):** 1792
 
 ## Dataset Incremental Details (Sample)
 
 | File | Status | Bars Appended | Rows Before | Rows After | Tail Buffer | Read MB | Write MB | Latency (ms) |
 |---|---|---|---|---|---|---|---|---|
-| AUDJPY_OCTAFX_15m_2026_CLEAN.csv | PASS | 6236 | 0 | 6236 | 200 | 0.32 | 0.33 | 217 |
-| AUDJPY_OCTAFX_1d_2026_CLEAN.csv | PASS | 69 | 0 | 69 | 200 | 0.00 | 0.00 | 40 |
-| AUDJPY_OCTAFX_1h_2026_CLEAN.csv | PASS | 1584 | 0 | 1584 | 200 | 0.08 | 0.08 | 78 |
-| AUDJPY_OCTAFX_1m_2026_CLEAN.csv | PASS | 94678 | 0 | 94678 | 500 | 4.81 | 5.02 | 840 |
-| AUDJPY_OCTAFX_30m_2026_CLEAN.csv | PASS | 3168 | 0 | 3168 | 200 | 0.16 | 0.17 | 105 |
-| AUDJPY_OCTAFX_4h_2026_CLEAN.csv | PASS | 399 | 0 | 399 | 200 | 0.02 | 0.02 | 75 |
-| AUDJPY_OCTAFX_5m_2026_CLEAN.csv | PASS | 18917 | 0 | 18917 | 300 | 0.96 | 1.00 | 192 |
-| AUDNZD_OCTAFX_15m_2026_CLEAN.csv | PASS | 6161 | 0 | 6161 | 200 | 0.31 | 0.33 | 107 |
-| AUDNZD_OCTAFX_1d_2026_CLEAN.csv | PASS | 69 | 0 | 69 | 200 | 0.00 | 0.00 | 71 |
-| AUDNZD_OCTAFX_1h_2026_CLEAN.csv | PASS | 1584 | 0 | 1584 | 200 | 0.08 | 0.08 | 97 |
-| AUDNZD_OCTAFX_1m_2026_CLEAN.csv | PASS | 94593 | 0 | 94593 | 500 | 4.81 | 5.01 | 761 |
-| AUDNZD_OCTAFX_30m_2026_CLEAN.csv | PASS | 3133 | 0 | 3133 | 200 | 0.16 | 0.17 | 97 |
-| AUDNZD_OCTAFX_4h_2026_CLEAN.csv | PASS | 399 | 0 | 399 | 200 | 0.02 | 0.02 | 63 |
-| AUDNZD_OCTAFX_5m_2026_CLEAN.csv | PASS | 18532 | 0 | 18532 | 300 | 0.94 | 0.98 | 205 |
-| AUDUSD_OCTAFX_15m_2026_CLEAN.csv | PASS | 6100 | 0 | 6100 | 200 | 0.31 | 0.32 | 111 |
-| AUDUSD_OCTAFX_1d_2026_CLEAN.csv | PASS | 69 | 0 | 69 | 200 | 0.00 | 0.00 | 55 |
-| AUDUSD_OCTAFX_1h_2026_CLEAN.csv | PASS | 1584 | 0 | 1584 | 200 | 0.08 | 0.08 | 71 |
-| AUDUSD_OCTAFX_1m_2026_CLEAN.csv | PASS | 94629 | 0 | 94629 | 500 | 4.81 | 5.01 | 639 |
-| AUDUSD_OCTAFX_30m_2026_CLEAN.csv | PASS | 3168 | 0 | 3168 | 200 | 0.16 | 0.17 | 78 |
-| AUDUSD_OCTAFX_4h_2026_CLEAN.csv | PASS | 399 | 0 | 399 | 200 | 0.02 | 0.02 | 64 |
-| AUDUSD_OCTAFX_5m_2026_CLEAN.csv | PASS | 18554 | 0 | 18554 | 300 | 0.94 | 0.98 | 160 |
-| AUS200_OCTAFX_15m_2026_CLEAN.csv | PASS | 5559 | 0 | 5559 | 200 | 0.27 | 0.28 | 99 |
-| AUS200_OCTAFX_1d_2026_CLEAN.csv | PASS | 64 | 0 | 64 | 200 | 0.00 | 0.00 | 63 |
-| AUS200_OCTAFX_1h_2026_CLEAN.csv | PASS | 1454 | 0 | 1454 | 200 | 0.07 | 0.07 | 85 |
-| AUS200_OCTAFX_1m_2026_CLEAN.csv | PASS | 83371 | 0 | 83371 | 500 | 4.12 | 4.21 | 721 |
-| AUS200_OCTAFX_30m_2026_CLEAN.csv | PASS | 2844 | 0 | 2844 | 200 | 0.14 | 0.14 | 94 |
-| AUS200_OCTAFX_4h_2026_CLEAN.csv | PASS | 380 | 0 | 380 | 200 | 0.02 | 0.02 | 71 |
-| AUS200_OCTAFX_5m_2026_CLEAN.csv | PASS | 16423 | 0 | 16423 | 300 | 0.81 | 0.83 | 192 |
-| BTC_DELTA_15m_2026_CLEAN.csv | PASS | 8929 | 0 | 8929 | 200 | 0.52 | 0.52 | 130 |
-| BTC_DELTA_1d_2026_CLEAN.csv | PASS | 94 | 0 | 94 | 200 | 0.00 | 0.00 | 50 |
-| BTC_DELTA_1h_2026_CLEAN.csv | PASS | 2233 | 0 | 2233 | 200 | 0.13 | 0.13 | 78 |
-| BTC_DELTA_1m_2026_CLEAN.csv | PASS | 133935 | 0 | 133935 | 500 | 7.61 | 7.69 | 1056 |
-| BTC_DELTA_3m_2026_CLEAN.csv | PASS | 44645 | 0 | 44645 | 300 | 2.56 | 2.59 | 438 |
-| BTC_DELTA_4h_2026_CLEAN.csv | PASS | 559 | 0 | 559 | 200 | 0.03 | 0.03 | 66 |
-| BTC_DELTA_5m_2026_CLEAN.csv | PASS | 26787 | 0 | 26787 | 300 | 1.54 | 1.56 | 290 |
-| BTCUSD_OCTAFX_15m_2026_CLEAN.csv | PASS | 8788 | 0 | 8788 | 200 | 0.48 | 0.50 | 116 |
-| BTCUSD_OCTAFX_1d_2026_CLEAN.csv | PASS | 93 | 0 | 93 | 200 | 0.00 | 0.00 | 62 |
-| BTCUSD_OCTAFX_1h_2026_CLEAN.csv | PASS | 2205 | 0 | 2205 | 200 | 0.12 | 0.13 | 77 |
-| BTCUSD_OCTAFX_1m_2026_CLEAN.csv | PASS | 118012 | 0 | 118012 | 500 | 6.43 | 6.65 | 1032 |
-| BTCUSD_OCTAFX_30m_2026_CLEAN.csv | PASS | 4395 | 0 | 4395 | 200 | 0.24 | 0.25 | 97 |
-| BTCUSD_OCTAFX_3m_2026_CLEAN.csv | PASS | 43482 | 0 | 43482 | 300 | 2.38 | 2.46 | 393 |
-| BTCUSD_OCTAFX_4h_2026_CLEAN.csv | PASS | 559 | 0 | 559 | 200 | 0.03 | 0.03 | 62 |
-| BTCUSD_OCTAFX_5m_2026_CLEAN.csv | PASS | 26188 | 0 | 26188 | 300 | 1.43 | 1.48 | 280 |
-| CADJPY_OCTAFX_15m_2026_CLEAN.csv | PASS | 6228 | 0 | 6228 | 200 | 0.32 | 0.33 | 117 |
-| CADJPY_OCTAFX_1d_2026_CLEAN.csv | PASS | 69 | 0 | 69 | 200 | 0.00 | 0.00 | 66 |
-| CADJPY_OCTAFX_1h_2026_CLEAN.csv | PASS | 1584 | 0 | 1584 | 200 | 0.08 | 0.08 | 81 |
-| CADJPY_OCTAFX_1m_2026_CLEAN.csv | PASS | 94597 | 0 | 94597 | 500 | 4.80 | 5.01 | 736 |
-| CADJPY_OCTAFX_30m_2026_CLEAN.csv | PASS | 3168 | 0 | 3168 | 200 | 0.16 | 0.17 | 94 |
-| CADJPY_OCTAFX_4h_2026_CLEAN.csv | PASS | 399 | 0 | 399 | 200 | 0.02 | 0.02 | 64 |
-| CADJPY_OCTAFX_5m_2026_CLEAN.csv | PASS | 18937 | 0 | 18937 | 300 | 0.96 | 1.00 | 199 |
+| AUDJPY_OCTAFX_15m_2026_CLEAN.csv | PASS | 7486 | 0 | 7486 | 200 | 0.39 | 0.40 | 186 |
+| AUDJPY_OCTAFX_1d_2026_CLEAN.csv | PASS | 83 | 0 | 83 | 200 | 0.00 | 0.00 | 80 |
+| AUDJPY_OCTAFX_1h_2026_CLEAN.csv | PASS | 1897 | 0 | 1897 | 200 | 0.10 | 0.10 | 95 |
+| AUDJPY_OCTAFX_1m_2026_CLEAN.csv | PASS | 113330 | 0 | 113330 | 500 | 5.95 | 6.01 | 1708 |
+| AUDJPY_OCTAFX_30m_2026_CLEAN.csv | PASS | 3793 | 0 | 3793 | 200 | 0.20 | 0.20 | 144 |
+| AUDJPY_OCTAFX_4h_2026_CLEAN.csv | PASS | 478 | 0 | 478 | 200 | 0.03 | 0.03 | 79 |
+| AUDJPY_OCTAFX_5m_2026_CLEAN.csv | PASS | 22651 | 0 | 22651 | 300 | 1.19 | 1.20 | 374 |
+| AUDNZD_OCTAFX_15m_2026_CLEAN.csv | PASS | 7411 | 0 | 7411 | 200 | 0.39 | 0.39 | 175 |
+| AUDNZD_OCTAFX_1d_2026_CLEAN.csv | PASS | 83 | 0 | 83 | 200 | 0.00 | 0.00 | 80 |
+| AUDNZD_OCTAFX_1h_2026_CLEAN.csv | PASS | 1897 | 0 | 1897 | 200 | 0.10 | 0.10 | 127 |
+| AUDNZD_OCTAFX_1m_2026_CLEAN.csv | PASS | 112366 | 0 | 112366 | 500 | 5.94 | 5.96 | 1743 |
+| AUDNZD_OCTAFX_30m_2026_CLEAN.csv | PASS | 3758 | 0 | 3758 | 200 | 0.20 | 0.20 | 143 |
+| AUDNZD_OCTAFX_4h_2026_CLEAN.csv | PASS | 478 | 0 | 478 | 200 | 0.03 | 0.03 | 95 |
+| AUDNZD_OCTAFX_5m_2026_CLEAN.csv | PASS | 22266 | 0 | 22266 | 300 | 1.17 | 1.18 | 416 |
+| AUDUSD_OCTAFX_15m_2026_CLEAN.csv | PASS | 7350 | 0 | 7350 | 200 | 0.39 | 0.39 | 195 |
+| AUDUSD_OCTAFX_1d_2026_CLEAN.csv | PASS | 83 | 0 | 83 | 200 | 0.00 | 0.00 | 84 |
+| AUDUSD_OCTAFX_1h_2026_CLEAN.csv | PASS | 1897 | 0 | 1897 | 200 | 0.10 | 0.10 | 111 |
+| AUDUSD_OCTAFX_1m_2026_CLEAN.csv | PASS | 113280 | 0 | 113280 | 500 | 5.95 | 6.00 | 1763 |
+| AUDUSD_OCTAFX_30m_2026_CLEAN.csv | PASS | 3793 | 0 | 3793 | 200 | 0.20 | 0.20 | 148 |
+| AUDUSD_OCTAFX_4h_2026_CLEAN.csv | PASS | 478 | 0 | 478 | 200 | 0.03 | 0.03 | 78 |
+| AUDUSD_OCTAFX_5m_2026_CLEAN.csv | PASS | 22288 | 0 | 22288 | 300 | 1.17 | 1.18 | 367 |
+| AUS200_OCTAFX_15m_2026_CLEAN.csv | PASS | 6564 | 0 | 6564 | 200 | 0.33 | 0.33 | 174 |
+| AUS200_OCTAFX_1d_2026_CLEAN.csv | PASS | 77 | 0 | 77 | 200 | 0.00 | 0.00 | 78 |
+| AUS200_OCTAFX_1h_2026_CLEAN.csv | PASS | 1718 | 0 | 1718 | 200 | 0.09 | 0.09 | 82 |
+| AUS200_OCTAFX_1m_2026_CLEAN.csv | PASS | 97591 | 0 | 97591 | 500 | 4.92 | 4.93 | 1434 |
+| AUS200_OCTAFX_30m_2026_CLEAN.csv | PASS | 3359 | 0 | 3359 | 200 | 0.17 | 0.17 | 141 |
+| AUS200_OCTAFX_4h_2026_CLEAN.csv | PASS | 453 | 0 | 453 | 200 | 0.02 | 0.02 | 95 |
+| AUS200_OCTAFX_5m_2026_CLEAN.csv | PASS | 19437 | 0 | 19437 | 300 | 0.97 | 0.98 | 349 |
+| BTCUSD_OCTAFX_15m_2026_CLEAN.csv | PASS | 10584 | 0 | 10584 | 200 | 0.60 | 0.61 | 221 |
+| BTCUSD_OCTAFX_1d_2026_CLEAN.csv | PASS | 113 | 0 | 113 | 200 | 0.01 | 0.01 | 79 |
+| BTCUSD_OCTAFX_1h_2026_CLEAN.csv | PASS | 2656 | 0 | 2656 | 200 | 0.15 | 0.15 | 133 |
+| BTCUSD_OCTAFX_1m_2026_CLEAN.csv | PASS | 158227 | 0 | 158227 | 500 | 9.04 | 9.10 | 2417 |
+| BTCUSD_OCTAFX_30m_2026_CLEAN.csv | PASS | 5293 | 0 | 5293 | 200 | 0.30 | 0.30 | 160 |
+| BTCUSD_OCTAFX_3m_2026_CLEAN.csv | PASS | 52809 | 0 | 52809 | 300 | 3.01 | 3.03 | 888 |
+| BTCUSD_OCTAFX_4h_2026_CLEAN.csv | PASS | 673 | 0 | 673 | 200 | 0.04 | 0.04 | 77 |
+| BTCUSD_OCTAFX_5m_2026_CLEAN.csv | PASS | 31648 | 0 | 31648 | 300 | 1.81 | 1.82 | 569 |
+| BTC_DELTA_15m_2026_CLEAN.csv | PASS | 10753 | 0 | 10753 | 200 | 0.63 | 0.63 | 223 |
+| BTC_DELTA_1d_2026_CLEAN.csv | PASS | 113 | 0 | 113 | 200 | 0.01 | 0.01 | 63 |
+| BTC_DELTA_1h_2026_CLEAN.csv | PASS | 2689 | 0 | 2689 | 200 | 0.16 | 0.16 | 108 |
+| BTC_DELTA_1m_2026_CLEAN.csv | PASS | 161295 | 0 | 161295 | 500 | 9.20 | 9.26 | 2445 |
+| BTC_DELTA_3m_2026_CLEAN.csv | PASS | 53765 | 0 | 53765 | 300 | 3.09 | 3.11 | 778 |
+| BTC_DELTA_4h_2026_CLEAN.csv | PASS | 673 | 0 | 673 | 200 | 0.04 | 0.04 | 79 |
+| BTC_DELTA_5m_2026_CLEAN.csv | PASS | 32259 | 0 | 32259 | 300 | 1.86 | 1.88 | 530 |
+| CADJPY_OCTAFX_15m_2026_CLEAN.csv | PASS | 7478 | 0 | 7478 | 200 | 0.39 | 0.40 | 190 |
+| CADJPY_OCTAFX_1d_2026_CLEAN.csv | PASS | 83 | 0 | 83 | 200 | 0.00 | 0.00 | 48 |
+| CADJPY_OCTAFX_1h_2026_CLEAN.csv | PASS | 1897 | 0 | 1897 | 200 | 0.10 | 0.10 | 111 |
+| CADJPY_OCTAFX_1m_2026_CLEAN.csv | PASS | 112377 | 0 | 112377 | 500 | 5.94 | 5.96 | 1685 |
+| CADJPY_OCTAFX_30m_2026_CLEAN.csv | PASS | 3793 | 0 | 3793 | 200 | 0.20 | 0.20 | 138 |
+| CADJPY_OCTAFX_4h_2026_CLEAN.csv | PASS | 478 | 0 | 478 | 200 | 0.03 | 0.03 | 85 |
+| CADJPY_OCTAFX_5m_2026_CLEAN.csv | PASS | 22670 | 0 | 22670 | 300 | 1.19 | 1.20 | 399 |
 
 **Integrity Confirmation:** Incremental CLEAN rebuild verified. No historic modifications, perfect monotonic timestamps retained, identical rules applied to tail only.

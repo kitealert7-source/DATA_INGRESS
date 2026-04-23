@@ -1,67 +1,67 @@
 # RAW Update Phase 1 Metrics (Incremental Append)
 
 ## Global I/O Footprint
-- **Total Read (MB):** 248.29 MB
-- **Total Write (MB):** 256.42 MB
-- **Total Runtime:** 43 seconds
+- **Total Read (MB):** 305.33 MB
+- **Total Write (MB):** 307.41 MB
+- **Total Runtime:** 91 seconds
 - **Skipped Writes (No New Data):** 0
-- **Datasets Scanned (With New Rows):** 234
+- **Datasets Scanned (With New Rows):** 232
 - **Datasets Scanned (Without New Rows):** 0
 
 ## Dataset Incremental Details (Sample)
 
 | File | Status | Bars Appended | Rows Before | Rows After | Tail Buffer | Read MB | Write MB | Latency (ms) |
 |---|---|---|---|---|---|---|---|---|
-| BTCUSD_OCTAFX_1m_2026_RAW.csv | PASS | 3958 | 114054 | 118012 | 500 | 7.41 | 7.66 | 270 |
-| BTCUSD_OCTAFX_3m_2026_RAW.csv | PASS | 1320 | 42162 | 43482 | 300 | 2.75 | 2.83 | 105 |
-| BTCUSD_OCTAFX_5m_2026_RAW.csv | PASS | 791 | 25397 | 26188 | 300 | 1.66 | 1.71 | 79 |
-| BTCUSD_OCTAFX_15m_2026_RAW.csv | PASS | 264 | 8524 | 8788 | 200 | 0.56 | 0.58 | 43 |
-| BTCUSD_OCTAFX_30m_2026_RAW.csv | PASS | 132 | 4263 | 4395 | 200 | 0.28 | 0.29 | 29 |
-| BTCUSD_OCTAFX_1h_2026_RAW.csv | PASS | 66 | 2139 | 2205 | 200 | 0.14 | 0.15 | 33 |
-| BTCUSD_OCTAFX_4h_2026_RAW.csv | PASS | 17 | 542 | 559 | 200 | 0.04 | 0.04 | 27 |
-| BTCUSD_OCTAFX_1d_2026_RAW.csv | PASS | 3 | 90 | 93 | 200 | 0.01 | 0.01 | 20 |
-| ETHUSD_OCTAFX_1m_2026_RAW.csv | PASS | 1593 | 126079 | 127672 | 500 | 7.87 | 7.97 | 262 |
-| ETHUSD_OCTAFX_3m_2026_RAW.csv | PASS | 1320 | 41609 | 42929 | 300 | 2.61 | 2.69 | 107 |
-| ETHUSD_OCTAFX_5m_2026_RAW.csv | PASS | 791 | 25372 | 26163 | 300 | 1.60 | 1.65 | 84 |
-| ETHUSD_OCTAFX_15m_2026_RAW.csv | PASS | 264 | 8485 | 8749 | 200 | 0.54 | 0.56 | 46 |
-| ETHUSD_OCTAFX_30m_2026_RAW.csv | PASS | 132 | 4263 | 4395 | 200 | 0.27 | 0.28 | 72 |
-| ETHUSD_OCTAFX_1h_2026_RAW.csv | PASS | 66 | 2138 | 2204 | 200 | 0.14 | 0.14 | 46 |
-| ETHUSD_OCTAFX_4h_2026_RAW.csv | PASS | 17 | 541 | 558 | 200 | 0.04 | 0.04 | 32 |
-| ETHUSD_OCTAFX_1d_2026_RAW.csv | PASS | 3 | 91 | 94 | 200 | 0.01 | 0.01 | 23 |
-| XAUUSD_OCTAFX_1m_2026_RAW.csv | PASS | 2465 | 86914 | 89379 | 500 | 5.41 | 5.57 | 255 |
-| XAUUSD_OCTAFX_3m_2026_RAW.csv | PASS | 821 | 15618 | 16439 | 300 | 0.94 | 0.99 | 70 |
-| XAUUSD_OCTAFX_5m_2026_RAW.csv | PASS | 493 | 17384 | 17877 | 300 | 1.10 | 1.13 | 68 |
-| XAUUSD_OCTAFX_15m_2026_RAW.csv | PASS | 164 | 5795 | 5959 | 200 | 0.37 | 0.38 | 45 |
-| XAUUSD_OCTAFX_30m_2026_RAW.csv | PASS | 82 | 2898 | 2980 | 200 | 0.19 | 0.19 | 39 |
-| XAUUSD_OCTAFX_1h_2026_RAW.csv | PASS | 41 | 1450 | 1491 | 200 | 0.09 | 0.10 | 32 |
-| XAUUSD_OCTAFX_4h_2026_RAW.csv | PASS | 10 | 380 | 390 | 200 | 0.03 | 0.03 | 30 |
-| XAUUSD_OCTAFX_1d_2026_RAW.csv | PASS | 1 | 64 | 65 | 200 | 0.00 | 0.00 | 25 |
-| BTC_DELTA_1m_2026_RAW.csv | PASS | 1440 | 132495 | 133935 | 500 | 7.48 | 7.56 | 250 |
-| BTC_DELTA_3m_2026_RAW.csv | PASS | 480 | 44165 | 44645 | 300 | 2.52 | 2.54 | 100 |
-| BTC_DELTA_5m_2026_RAW.csv | PASS | 288 | 26499 | 26787 | 300 | 1.52 | 1.53 | 72 |
-| BTC_DELTA_15m_2026_RAW.csv | PASS | 96 | 8833 | 8929 | 200 | 0.51 | 0.52 | 43 |
-| BTC_DELTA_1h_2026_RAW.csv | PASS | 24 | 2209 | 2233 | 200 | 0.13 | 0.13 | 34 |
-| BTC_DELTA_4h_2026_RAW.csv | PASS | 6 | 553 | 559 | 200 | 0.03 | 0.03 | 31 |
-| BTC_DELTA_1d_2026_RAW.csv | PASS | 1 | 93 | 94 | 200 | 0.00 | 0.00 | 15 |
-| ETH_DELTA_1m_2026_RAW.csv | PASS | 1440 | 132495 | 133935 | 500 | 7.26 | 7.34 | 267 |
-| ETH_DELTA_3m_2026_RAW.csv | PASS | 480 | 44165 | 44645 | 300 | 2.44 | 2.47 | 94 |
-| ETH_DELTA_5m_2026_RAW.csv | PASS | 288 | 26499 | 26787 | 300 | 1.47 | 1.49 | 68 |
-| ETH_DELTA_15m_2026_RAW.csv | PASS | 96 | 8833 | 8929 | 200 | 0.50 | 0.50 | 58 |
-| ETH_DELTA_1h_2026_RAW.csv | PASS | 24 | 2209 | 2233 | 200 | 0.13 | 0.13 | 37 |
-| ETH_DELTA_4h_2026_RAW.csv | PASS | 6 | 553 | 559 | 200 | 0.03 | 0.03 | 23 |
-| ETH_DELTA_1d_2026_RAW.csv | PASS | 1 | 93 | 94 | 200 | 0.00 | 0.00 | 22 |
-| EURUSD_OCTAFX_1m_2026_RAW.csv | PASS | 3942 | 89250 | 93192 | 500 | 5.41 | 5.66 | 235 |
-| EURUSD_OCTAFX_5m_2026_RAW.csv | PASS | 790 | 17132 | 17922 | 300 | 1.04 | 1.09 | 59 |
-| EURUSD_OCTAFX_15m_2026_RAW.csv | PASS | 264 | 5760 | 6024 | 200 | 0.35 | 0.37 | 45 |
-| EURUSD_OCTAFX_30m_2026_RAW.csv | PASS | 132 | 2998 | 3130 | 200 | 0.18 | 0.19 | 35 |
-| EURUSD_OCTAFX_1h_2026_RAW.csv | PASS | 66 | 1500 | 1566 | 200 | 0.09 | 0.10 | 36 |
-| EURUSD_OCTAFX_4h_2026_RAW.csv | PASS | 16 | 383 | 399 | 200 | 0.02 | 0.03 | 27 |
-| EURUSD_OCTAFX_1d_2026_RAW.csv | PASS | 2 | 67 | 69 | 200 | 0.00 | 0.00 | 22 |
-| GBPUSD_OCTAFX_1m_2026_RAW.csv | PASS | 3951 | 90673 | 94624 | 500 | 5.67 | 5.94 | 205 |
-| GBPUSD_OCTAFX_5m_2026_RAW.csv | PASS | 791 | 18150 | 18941 | 300 | 1.13 | 1.18 | 51 |
-| GBPUSD_OCTAFX_15m_2026_RAW.csv | PASS | 264 | 6072 | 6336 | 200 | 0.38 | 0.40 | 45 |
-| GBPUSD_OCTAFX_30m_2026_RAW.csv | PASS | 132 | 3036 | 3168 | 200 | 0.19 | 0.20 | 27 |
-| GBPUSD_OCTAFX_1h_2026_RAW.csv | PASS | 66 | 1518 | 1584 | 200 | 0.10 | 0.10 | 36 |
+| BTCUSD_OCTAFX_1m_2026_RAW.csv | PASS | 1070 | 157157 | 158227 | 500 | 10.27 | 10.34 | 310 |
+| BTCUSD_OCTAFX_3m_2026_RAW.csv | PASS | 358 | 52451 | 52809 | 300 | 3.47 | 3.49 | 120 |
+| BTCUSD_OCTAFX_5m_2026_RAW.csv | PASS | 214 | 31434 | 31648 | 300 | 2.09 | 2.10 | 90 |
+| BTCUSD_OCTAFX_15m_2026_RAW.csv | PASS | 72 | 10512 | 10584 | 200 | 0.70 | 0.71 | 47 |
+| BTCUSD_OCTAFX_30m_2026_RAW.csv | PASS | 36 | 5257 | 5293 | 200 | 0.35 | 0.36 | 47 |
+| BTCUSD_OCTAFX_1h_2026_RAW.csv | PASS | 18 | 2638 | 2656 | 200 | 0.18 | 0.18 | 33 |
+| BTCUSD_OCTAFX_4h_2026_RAW.csv | PASS | 5 | 668 | 673 | 200 | 0.05 | 0.05 | 28 |
+| BTCUSD_OCTAFX_1d_2026_RAW.csv | PASS | 1 | 112 | 113 | 200 | 0.01 | 0.01 | 22 |
+| ETHUSD_OCTAFX_1m_2026_RAW.csv | PASS | 1070 | 157191 | 158261 | 500 | 9.81 | 9.87 | 302 |
+| ETHUSD_OCTAFX_3m_2026_RAW.csv | PASS | 358 | 51530 | 51888 | 300 | 3.23 | 3.25 | 107 |
+| ETHUSD_OCTAFX_5m_2026_RAW.csv | PASS | 214 | 31318 | 31532 | 300 | 1.97 | 1.99 | 76 |
+| ETHUSD_OCTAFX_15m_2026_RAW.csv | PASS | 72 | 10473 | 10545 | 200 | 0.66 | 0.67 | 93 |
+| ETHUSD_OCTAFX_30m_2026_RAW.csv | PASS | 36 | 5257 | 5293 | 200 | 0.33 | 0.34 | 135 |
+| ETHUSD_OCTAFX_1h_2026_RAW.csv | PASS | 18 | 2637 | 2655 | 200 | 0.17 | 0.17 | 74 |
+| ETHUSD_OCTAFX_4h_2026_RAW.csv | PASS | 5 | 667 | 672 | 200 | 0.04 | 0.04 | 63 |
+| ETHUSD_OCTAFX_1d_2026_RAW.csv | PASS | 1 | 112 | 113 | 200 | 0.01 | 0.01 | 34 |
+| XAUUSD_OCTAFX_1m_2026_RAW.csv | PASS | 1059 | 106260 | 107319 | 500 | 6.62 | 6.69 | 584 |
+| XAUUSD_OCTAFX_3m_2026_RAW.csv | PASS | 352 | 22067 | 22419 | 300 | 1.34 | 1.36 | 163 |
+| XAUUSD_OCTAFX_5m_2026_RAW.csv | PASS | 211 | 21254 | 21465 | 300 | 1.34 | 1.36 | 174 |
+| XAUUSD_OCTAFX_15m_2026_RAW.csv | PASS | 70 | 7085 | 7155 | 200 | 0.45 | 0.46 | 106 |
+| XAUUSD_OCTAFX_30m_2026_RAW.csv | PASS | 35 | 3543 | 3578 | 200 | 0.23 | 0.23 | 97 |
+| XAUUSD_OCTAFX_1h_2026_RAW.csv | PASS | 17 | 1773 | 1790 | 200 | 0.11 | 0.12 | 63 |
+| XAUUSD_OCTAFX_4h_2026_RAW.csv | PASS | 5 | 464 | 469 | 200 | 0.03 | 0.03 | 47 |
+| XAUUSD_OCTAFX_1d_2026_RAW.csv | PASS | 1 | 78 | 79 | 200 | 0.00 | 0.00 | 42 |
+| BTC_DELTA_1m_2026_RAW.csv | PASS | 1074 | 160221 | 161295 | 500 | 9.04 | 9.11 | 795 |
+| BTC_DELTA_3m_2026_RAW.csv | PASS | 358 | 53407 | 53765 | 300 | 3.04 | 3.06 | 298 |
+| BTC_DELTA_5m_2026_RAW.csv | PASS | 214 | 32045 | 32259 | 300 | 1.83 | 1.85 | 205 |
+| BTC_DELTA_15m_2026_RAW.csv | PASS | 71 | 10682 | 10753 | 200 | 0.62 | 0.62 | 93 |
+| BTC_DELTA_1h_2026_RAW.csv | PASS | 18 | 2671 | 2689 | 200 | 0.16 | 0.16 | 111 |
+| BTC_DELTA_4h_2026_RAW.csv | PASS | 5 | 668 | 673 | 200 | 0.04 | 0.04 | 44 |
+| BTC_DELTA_1d_2026_RAW.csv | PASS | 1 | 112 | 113 | 200 | 0.01 | 0.01 | 33 |
+| ETH_DELTA_1m_2026_RAW.csv | PASS | 1074 | 160221 | 161295 | 500 | 8.78 | 8.84 | 708 |
+| ETH_DELTA_3m_2026_RAW.csv | PASS | 358 | 53407 | 53765 | 300 | 2.95 | 2.97 | 287 |
+| ETH_DELTA_5m_2026_RAW.csv | PASS | 214 | 32045 | 32259 | 300 | 1.78 | 1.79 | 207 |
+| ETH_DELTA_15m_2026_RAW.csv | PASS | 71 | 10682 | 10753 | 200 | 0.60 | 0.60 | 110 |
+| ETH_DELTA_1h_2026_RAW.csv | PASS | 18 | 2671 | 2689 | 200 | 0.15 | 0.15 | 62 |
+| ETH_DELTA_4h_2026_RAW.csv | PASS | 5 | 668 | 673 | 200 | 0.04 | 0.04 | 47 |
+| ETH_DELTA_1d_2026_RAW.csv | PASS | 1 | 112 | 113 | 200 | 0.01 | 0.01 | 32 |
+| EURUSD_OCTAFX_1m_2026_RAW.csv | PASS | 1069 | 110763 | 111832 | 500 | 6.74 | 6.80 | 488 |
+| EURUSD_OCTAFX_5m_2026_RAW.csv | PASS | 214 | 21442 | 21656 | 300 | 1.31 | 1.32 | 184 |
+| EURUSD_OCTAFX_15m_2026_RAW.csv | PASS | 72 | 7202 | 7274 | 200 | 0.44 | 0.45 | 83 |
+| EURUSD_OCTAFX_30m_2026_RAW.csv | PASS | 36 | 3719 | 3755 | 200 | 0.23 | 0.23 | 79 |
+| EURUSD_OCTAFX_1h_2026_RAW.csv | PASS | 18 | 1861 | 1879 | 200 | 0.12 | 0.12 | 60 |
+| EURUSD_OCTAFX_4h_2026_RAW.csv | PASS | 5 | 473 | 478 | 200 | 0.03 | 0.03 | 47 |
+| EURUSD_OCTAFX_1d_2026_RAW.csv | PASS | 1 | 82 | 83 | 200 | 0.00 | 0.00 | 47 |
+| GBPUSD_OCTAFX_1m_2026_RAW.csv | PASS | 1069 | 112219 | 113288 | 500 | 7.07 | 7.14 | 618 |
+| GBPUSD_OCTAFX_5m_2026_RAW.csv | PASS | 214 | 22461 | 22675 | 300 | 1.40 | 1.41 | 160 |
+| GBPUSD_OCTAFX_15m_2026_RAW.csv | PASS | 72 | 7514 | 7586 | 200 | 0.47 | 0.47 | 97 |
+| GBPUSD_OCTAFX_30m_2026_RAW.csv | PASS | 36 | 3757 | 3793 | 200 | 0.24 | 0.24 | 96 |
+| GBPUSD_OCTAFX_1h_2026_RAW.csv | PASS | 18 | 1879 | 1897 | 200 | 0.12 | 0.12 | 65 |
 
 ## Detailed Failures / Warnings
 No critical validation failures.

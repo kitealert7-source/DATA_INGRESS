@@ -67,8 +67,8 @@ def get_or_count_lines(filepath):
                 meta = json.load(f)
                 if meta.get("file_size") == actual_size and meta.get("mtime") == actual_mtime:
                     return meta.get("total_lines", 0)
-        except:
-            pass
+        except Exception as e:
+            print(f"Warning: Could not read line-count cache {meta_path}: {e}")
             
     lines = count_lines_fast(filepath)
     update_line_count(filepath, lines, actual_size, actual_mtime)
@@ -83,8 +83,8 @@ def update_line_count(filepath, lines, file_size=None, mtime=None):
         meta_path = filepath + ".meta.json"
         with open(meta_path, 'w') as f:
             json.dump({"total_lines": lines, "file_size": file_size, "mtime": mtime}, f)
-    except:
-        pass
+    except Exception as e:
+        print(f"Warning: Could not write line-count cache {meta_path}: {e}")
 
 def read_last_line_timestamp(filepath):
     if not os.path.exists(filepath):
@@ -116,9 +116,9 @@ def read_last_line_timestamp(filepath):
             try:
                 ts = pd.to_datetime(candidate, errors='raise')
                 return ts
-            except:
+            except Exception:
                 continue
-                
+
         return None
     except Exception as e:
         print(f"Warning: Could not read last timestamp from {filepath}: {e}")
@@ -511,7 +511,20 @@ def process_file(filepath):
         
     if validation_res:
          # COMMIT - Atomic Replace
+         _pre_commit_hash = compute_file_sha256(temp_path)
          os.replace(temp_path, clean_path)
+         _post_commit_hash = compute_file_sha256(clean_path)
+         if _post_commit_hash != _pre_commit_hash:
+             print(f"  [CHECKSUM_MISMATCH] {clean_filename}: "
+                   f"pre={_pre_commit_hash[:8]}... post={_post_commit_hash[:8]}...")
+             metric_entry["status"] = "CHECKSUM_FAIL"
+             metric_entry["errors"] = (metric_entry.get("errors") or []) + ["post_write_checksum_mismatch"]
+             _corrupt_path = clean_path + ".corrupt"
+             try:
+                 os.replace(clean_path, _corrupt_path)
+                 print(f"  [QUARANTINE] Corrupted file moved to: {_corrupt_path}")
+             except OSError as _qe:
+                 print(f"  [QUARANTINE_FAIL] Could not quarantine {clean_path}: {_qe}")
          update_line_count(clean_path, rows_after + 1)
          print(f"  [ATOMIC COMMIT] Saved {clean_filename} (Rebuilt tail: +{rows_added} rows)")
          

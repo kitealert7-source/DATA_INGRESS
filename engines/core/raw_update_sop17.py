@@ -13,6 +13,11 @@ import hmac
 import hashlib
 from dataset_validator_sop17 import SOP17Validator
 
+# Guard against silent dataset forks
+import sys as _sys
+_sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from config.path_config import assert_canonical_master_dir as _assert_canonical
+
 ENGINE_VERSION = "SOP17_INCREMENTAL_STABLE_v1"
 
 # Load Delta Exchange API credentials from .secrets
@@ -42,7 +47,7 @@ ETH_DIR = os.path.join(BASE_DIR, "ETH_DELTA_MASTER", "RAW")
 
 # OctaFX/MT5 Directories
 BTC_OCTAFX_DIR = os.path.join(BASE_DIR, "BTC_OCTAFX_MASTER", "RAW")
-ETH_OCTAFX_DIR = os.path.join(BASE_DIR, "ETH_OCTAFX_MASTER", "RAW")
+ETH_OCTAFX_DIR = os.path.join(BASE_DIR, "ETHUSD_OCTAFX_MASTER", "RAW")
 
 # FX Pair Directories (OctaFX)
 EURUSD_DIR = os.path.join(BASE_DIR, "EURUSD_OCTAFX_MASTER", "RAW")
@@ -136,7 +141,7 @@ def read_last_line_timestamp(filepath):
                 if ts.tzinfo is not None:
                     ts = ts.tz_localize(None)
                 return ts
-            except:
+            except Exception:
                 continue
                 
         return None
@@ -425,8 +430,27 @@ def save_data(df, asset, feed, timeframe, target_dir):
         if validation_res.valid:
             # COMMIT - Atomic Replace Sequence (Invariant 4)
             # Upgraded to specific Windows atomic os.replace method
+            _pre_commit_hash = compute_file_sha256(temp_path)
             os.replace(temp_path, filepath)
             print(f"  [ATOMIC COMMIT] Saved {filename} (Added {rows_added} rows)")
+
+            # Post-write integrity check: read back and verify hash matches .tmp
+            _post_commit_hash = compute_file_sha256(filepath)
+            if _post_commit_hash != _pre_commit_hash:
+                print(f"  [CHECKSUM_MISMATCH] {filename}: "
+                      f"pre={_pre_commit_hash[:8]}... post={_post_commit_hash[:8]}...")
+                GLOBAL_METRICS["checksum_failures"] = GLOBAL_METRICS.get("checksum_failures", 0) + 1
+                metric_entry["status"] = "CHECKSUM_FAIL"
+                metric_entry["errors"] = (metric_entry.get("errors") or []) + ["post_write_checksum_mismatch"]
+                # Quarantine: move corrupted file out of the pipeline read path.
+                # Prevents downstream model contamination. Original is unrecoverable
+                # (os.replace already removed it), so .corrupt preserves evidence.
+                _corrupt_path = filepath + ".corrupt"
+                try:
+                    os.replace(filepath, _corrupt_path)
+                    print(f"  [QUARANTINE] Corrupted file moved to: {_corrupt_path}")
+                except OSError as _qe:
+                    print(f"  [QUARANTINE_FAIL] Could not quarantine {filepath}: {_qe}")
             
             # 4. GENERATE RAW MANIFEST (downstream staleness detection)
             _write_raw_manifest(filepath, asset, feed, timeframe, year)
@@ -592,6 +616,7 @@ def _ingest_mt5_forward(symbol, feed_name, target_dir, timeframes, incremental=T
     """
     Safe forward-fetch ingestion for MT5.
     """
+    _assert_canonical(Path(target_dir))
     print(f"\n--- Ingesting {symbol} [{feed_name}] (Dry Run: {dry_run}) ---")
     if not mt5.initialize():
         print(f"MT5 Init Failed: {mt5.last_error()}")
@@ -724,6 +749,7 @@ def ingest_mt5_xauusd(incremental=True, full_reset=False, dry_run=False):
 
 
 def ingest_delta_crypto(asset, symbol, target_dir, incremental=True, full_reset=False, dry_run=False):
+    _assert_canonical(Path(target_dir))
     print(f"--- Ingesting {asset} ({symbol}) from Delta Exchange (Dry Run: {dry_run}) ---")
     if dry_run:
         print(f"  [DRY RUN] Skipping actual fetch for Delta (verified externally). Assuming safe.")

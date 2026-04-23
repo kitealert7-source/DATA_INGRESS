@@ -688,11 +688,24 @@ def process_file(clean_path, force_rebuild=False, register_mode=False, dry_run=F
     RUN_METRICS.append(metric_entry)
          
     if valid and not dry_run:
+         _pre_commit_hash = compute_file_sha256(temp_path)
          os.replace(temp_path, research_path)
-         
+         _post_commit_hash = compute_file_sha256(research_path)
+         if _post_commit_hash != _pre_commit_hash:
+             print(f"  [CHECKSUM_MISMATCH] {research_basename}: "
+                   f"pre={_pre_commit_hash[:8]}... post={_post_commit_hash[:8]}...")
+             metric_entry["status"] = "CHECKSUM_FAIL"
+             metric_entry["errors"] = (metric_entry.get("errors") or []) + ["post_write_checksum_mismatch"]
+             _corrupt_path = research_path + ".corrupt"
+             try:
+                 os.replace(research_path, _corrupt_path)
+                 print(f"  [QUARANTINE] Corrupted file moved to: {_corrupt_path}")
+             except OSError as _qe:
+                 print(f"  [QUARANTINE_FAIL] Could not quarantine {research_path}: {_qe}")
+
          total_lines_final = count_lines_fast(research_path)
          update_line_count(research_path, total_lines_final)
-         
+
          print(f"  [ATOMIC COMMIT] Saved {research_basename} (Rebuilt tail: +{rows_added} rows)")
 
          # CONSTRAINT 2: Computed cleanly off the final dataset now existing at research_path
