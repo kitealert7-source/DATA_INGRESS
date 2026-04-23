@@ -1,0 +1,55 @@
+btcusd_octafx_history_validation:
+  1m:
+    earliest_timestamp: '2026-01-25T15:33:00+00:00'
+    total_years_covered: 0.19
+    total_bars: 99820
+    major_gaps_count_gt_3days: 0
+    max_gap_days: 0.16
+  3m:
+    earliest_timestamp: '2025-09-05T07:27:00+00:00'
+    total_years_covered: 0.58
+    total_bars: 99940
+    major_gaps_count_gt_3days: 0
+    max_gap_days: 1.09
+  5m:
+    earliest_timestamp: '2025-04-17T18:10:00+00:00'
+    total_years_covered: 0.97
+    total_bars: 99964
+    major_gaps_count_gt_3days: 0
+    max_gap_days: 1.09
+  15m:
+    earliest_timestamp: '2023-05-14T15:00:00+00:00'
+    total_years_covered: 2.89
+    total_bars: 99992
+    major_gaps_count_gt_3days: 0
+    max_gap_days: 1.09
+  30m:
+    earliest_timestamp: '2020-01-02T01:00:00+00:00'
+    total_years_covered: 6.26
+    total_bars: 98052
+    major_gaps_count_gt_3days: 2
+    max_gap_days: 3.02
+  1h:
+    earliest_timestamp: '2020-01-02T01:00:00+00:00'
+    total_years_covered: 6.26
+    total_bars: 49140
+    major_gaps_count_gt_3days: 2
+    max_gap_days: 3.04
+  4h:
+    earliest_timestamp: '2020-01-02T00:00:00+00:00'
+    total_years_covered: 6.26
+    total_bars: 12393
+    major_gaps_count_gt_3days: 2
+    max_gap_days: 3.17
+  1d:
+    earliest_timestamp: '2020-01-02T00:00:00+00:00'
+    total_years_covered: 6.26
+    total_bars: 2070
+    major_gaps_count_gt_3days: 2
+    max_gap_days: 4.0
+overall_summary:
+  earliest_available: '2020-01-02T00:00:00+00:00'
+  longest_span_tf: 30m
+  rebuild_recommended: false
+  message: 'Strict instructions followed: DO NOT automatically rebuild CLEAN or RESEARCH
+    layers.'
