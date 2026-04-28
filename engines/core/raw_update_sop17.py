@@ -622,18 +622,26 @@ def _ingest_mt5_forward(symbol, feed_name, target_dir, timeframes, incremental=T
         print(f"MT5 Init Failed: {mt5.last_error()}")
         return
 
+    # Force Market Watch subscription for this symbol.
+    # Without symbol_select(name, True), copy_rates_from() can silently return
+    # None or only stale-cached bars for crosses/indices that aren't in MT5's
+    # default Market Watch — even though mt5.initialize() succeeded. This was
+    # the root cause of 28 stale (symbol, tf) combos at 1m/5m on 2026-04-28.
+    if not mt5.symbol_select(symbol, True):
+        print(f"  [WARN] symbol_select({symbol}, True) failed: {mt5.last_error()}")
+
     for tf_name, tf_val in timeframes.items():
         print(f"Propagating {symbol} {tf_name}...")
-        
+
         # Determine From Date
         from_date = None
         current_year = datetime.now().year
         # Correct Naming: ASSET_FEED_TIMEFRAME_YEAR_RAW.csv
         raw_filename = f"{symbol}_{feed_name}_{tf_name}_{current_year}_RAW.csv"
         raw_path = os.path.join(target_dir, raw_filename)
-        
+
         last_ts = read_last_line_timestamp(raw_path)
-        
+
         if incremental and not full_reset and last_ts:
              # Strict forward fetch
              from_date = last_ts
@@ -642,10 +650,13 @@ def _ingest_mt5_forward(symbol, feed_name, target_dir, timeframes, incremental=T
              # Default start or Full Reset
              from_date = datetime(2024, 1, 1) # Default fallback
              print(f"  Starting from default/history: {from_date}")
-        
+
         # Fetch using copy_rates_from (more reliable than copy_rates_range for full history)
-        # Use max bars allowed (99999) for full reset, or smaller for incremental
-        max_bars = 99999 if full_reset else 10000
+        # Incremental cap raised 10000 -> 50000 bars: 10k 1m bars covered only
+        # ~7 calendar days, so any gap > 5 trading days could fail to fully
+        # backfill. 50k 1m bars covers ~35 calendar days — safer for any
+        # plausible recovery window without meaningfully increasing fetch cost.
+        max_bars = 99999 if full_reset else 50000
         
         print(f"  Fetching {max_bars} bars from now...")
         
@@ -673,7 +684,20 @@ def _ingest_mt5_forward(symbol, feed_name, target_dir, timeframes, incremental=T
             if df['time'].dt.tz is not None:
                 df['time'] = df['time'].dt.tz_localize(None)
             df = df[df['time'] >= cutoff]
-            
+
+        # --- FUTURE-BAR GUARD ---
+        # MT5 occasionally returns bars stamped in broker-server-time (not UTC),
+        # producing rows whose timestamps are hours ahead of "now". Observed once
+        # for AUS200_OCTAFX_5m on 2026-04-28 (26 bars at 08:10 UTC vs. now=06:02).
+        # Drop any bar whose timestamp exceeds now + 1 minute. The 1-minute slack
+        # absorbs clock skew between local Python and the broker.
+        now_utc = pd.Timestamp.utcnow().tz_localize(None)
+        future_cap = now_utc + pd.Timedelta(minutes=1)
+        n_before = len(df)
+        df = df[df['time'] <= future_cap]
+        if len(df) < n_before:
+            print(f"  [FUTURE-BAR DROP] Discarded {n_before - len(df)} bars > {future_cap}")
+
         # Filter strict > from_date
         # Pipeline rule: RAW must be strictly increasing.
         if incremental and not full_reset and from_date:

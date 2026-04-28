@@ -49,14 +49,19 @@ def _last_valid_ts(csv_path: Path) -> "pd.Timestamp | None":
         t_col = "time" if "time" in df.columns else "timestamp"
         ts    = pd.to_datetime(df[t_col], errors="coerce")
         ts    = ts[ts.notna()]
-        ts    = ts[(ts > "2010-01-01") & (ts < pd.Timestamp.now())]
+        # Use UTC for both filtering and sanity check. pd.Timestamp.now() returns
+        # LOCAL time, so on a UTC+5:30 machine (IST) the filter would keep bars
+        # up to 5h30m AHEAD of real UTC, then the UTC sanity check below would
+        # reject the same bars as "future" — falsely flagging the file as
+        # unreadable. Caused AUS200_OCTAFX_5m to spuriously fail on 2026-04-28.
+        now = pd.Timestamp.utcnow().tz_localize(None)
+        ts    = ts[(ts > "2010-01-01") & (ts < now)]
         if ts.empty:
             return None
         latest = ts.max()
         # Sanity check: if max parsed timestamp is in the future, parsing went wrong.
         # 5-minute buffer absorbs clock drift and ingestion timing edge cases
         # while still catching real errors (dayfirst bug fails by months, not minutes).
-        now = pd.Timestamp.utcnow().tz_localize(None)
         if latest > now + pd.Timedelta(minutes=5):
             raise ValueError(
                 f"Parsed timestamp {latest} exceeds current time — "
