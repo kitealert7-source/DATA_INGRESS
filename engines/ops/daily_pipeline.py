@@ -39,6 +39,7 @@ REPORTS_DIR = os.path.join(DATA_INGRESS, "reports")
 
 # Scripts
 RAW_UPDATE        = os.path.join(DATA_INGRESS, "engines", "core", "raw_update_sop17.py")
+RAW_COVERAGE      = os.path.join(DATA_INGRESS, "engines", "ops",  "assert_raw_coverage.py")
 VALIDATOR         = os.path.join(DATA_INGRESS, "engines", "core", "dataset_validator_sop17.py")
 CLEAN_REBUILD     = os.path.join(DATA_INGRESS, "engines", "core", "clean_rebuild_sop17.py")
 RESEARCH_REBUILD  = os.path.join(DATA_INGRESS, "engines", "core", "rebuild_research_sop17.py")
@@ -435,14 +436,20 @@ def main():
     # ─────────────────────────────────────────────────────────────────
     
     phases = [
-        ("1. RAW Update",             [python, RAW_UPDATE,        "--incremental"]),
-        ("2. Validation",             [python, VALIDATOR,              "--audit-all"]),
+        ("1. RAW Update",              [python, RAW_UPDATE,              "--incremental"]),
+        # 1.5 promotes "Phase 1 didn't crash" to "every expected (sym, tf) tuple
+        # has fresh RAW data within threshold." Catches silent
+        # MT5.copy_rates_from() returning None for unsubscribed symbols and
+        # any other class of skip-without-error. Hard fail aborts before
+        # Validation; governance is never updated on incomplete RAW.
+        ("1.5. RAW Coverage Assertion", [python, RAW_COVERAGE]),
+        ("2. Validation",              [python, VALIDATOR,               "--audit-all"]),
         ("2.5. Missing Rate Baseline", [python, MISSING_BASELINE_VALIDATE]),
-        ("3. CLEAN Rebuild",          [python, CLEAN_REBUILD,          "--all"]),
-        ("4. RESEARCH Rebuild",       [python, RESEARCH_REBUILD,  "--register-lineage"]),
-        ("4.5. RESEARCH Validation",  [python, RESEARCH_VALIDATE]),
-        ("5. USD_SYNTH",              [python, USD_SYNTH]),
-        ("5.5. NEWS_CALENDAR",        [python, NEWS_CALENDAR_BUILD]),
+        ("3. CLEAN Rebuild",           [python, CLEAN_REBUILD,           "--all"]),
+        ("4. RESEARCH Rebuild",        [python, RESEARCH_REBUILD,        "--register-lineage"]),
+        ("4.5. RESEARCH Validation",   [python, RESEARCH_VALIDATE]),
+        ("5. USD_SYNTH",               [python, USD_SYNTH]),
+        ("5.5. NEWS_CALENDAR",         [python, NEWS_CALENDAR_BUILD]),
     ]
     
     for name, cmd in phases:
