@@ -30,13 +30,15 @@
 | Phase | Script | Responsibility |
 |-------|--------|----------------|
 | 1 | `engines/core/raw_update_sop17.py` | Incremental RAW ingestion from MT5 + Delta Exchange |
+| 1.5 | `engines/ops/assert_raw_coverage.py` | RAW completeness invariant — every (sym, tf) in `EXPECTED_COVERAGE` must be fresh within threshold; hard fail otherwise |
 | 2 | `engines/core/dataset_validator_sop17.py` | Structural validation |
 | 2.5 | `engines/ops/validate_missing_baseline.py` | Behavioral anomaly detection (statistical drift) |
 | 3 | `engines/core/clean_rebuild_sop17.py` | CLEAN layer rebuild from RAW |
 | 4 | `engines/core/rebuild_research_sop17.py` | RESEARCH layer rebuild with lineage |
 | 4.5 | `engines/ops/validate_research_layer.py` | Post-rebuild RESEARCH integrity check |
 | 5 | `engines/ops/build_usd_synth.py` | Synthetic USD dataset construction |
-| 6 | Governance update | `last_successful_daily_run.json` — only if phases 1–5 all pass |
+| 5.5 | `engines/ops/build_news_calendar.py` | External macro-event calendar ingest (RAW → CLEAN → RESEARCH) |
+| 6 | Governance update | `last_successful_daily_run.json` — only if phases 1–5.5 all pass |
 
 Pipeline entry point: `engines/ops/daily_pipeline.py`
 Scheduler entry point: `engines/ops/invoke_preflight.ps1`

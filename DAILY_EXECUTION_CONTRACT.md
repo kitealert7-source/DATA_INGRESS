@@ -2,7 +2,7 @@
 
 **Authorization**: Anti-Gravity Daily Execution Orchestrator
 **Date**: 2026-01-29
-**Last Updated**: 2026-04-23
+**Last Updated**: 2026-04-30
 **Status**: ENFORCED
 
 ---
@@ -30,6 +30,7 @@ The Preflight Agent evaluates system state and emits exactly one token:
 - **No Loops**: Each trigger fires once per event (boot or daily schedule).
 - **State Preservation**: Failures leave the system in a safe, non-corrupt state.
 - **RUN_RECOVERY is not automatic**: It signals a gap or failure requiring manual investigation — the pipeline will not attempt self-repair.
+- **Phase 1.5 is a hard-fail gate**: `assert_raw_coverage.py` exits 1 if any (sym, tf) tuple in `EXPECTED_COVERAGE` is missing or stale beyond threshold. The pipeline halts before Phase 2; governance is not updated. This converts "Phase 1 didn't crash" into "every expected dataset is fresh."
 
 ---
 
@@ -69,6 +70,7 @@ before reading governance state or launching Python.
 - **Allow task to be run on demand**: CHECKED
 - **Stop the task if it runs longer than**: 1 Hour
 - **If the task is already running**: Do not start a new instance
+- **Start the task as soon as possible after a scheduled start is missed**: CHECKED (`StartWhenAvailable=True`, applied 2026-04-28 via UAC — closes the silent-skip gap when the machine is on but the 00:15 UTC window was narrowly missed)
 
 ---
 
